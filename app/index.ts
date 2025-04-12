@@ -5,9 +5,9 @@ import errorpage from "./errorpage.html";
 import { exportNewView } from "./components/exportView";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
-import { resolve } from "path";
+import { join } from "path";
 
-const webSocketJs = readFileSync(resolve("websocket.js"), "utf8");
+const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
 
 let clients = new Set<ServerWebSocket>();
