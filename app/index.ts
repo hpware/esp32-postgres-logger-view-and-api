@@ -1,7 +1,7 @@
 import { sql } from "bun";
 import type { ServerWebSocket } from "bun";
-import index from "../index.html";
-import errorpage from "../errorpage.html";
+import index from "./index.html";
+import errorpage from "./errorpage.html";
 import { exportNewView } from "./components/exportView";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
