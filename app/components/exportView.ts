@@ -92,8 +92,9 @@ export async function exportNewView() {
     LIMIT 1
 `;
 
-    const data = latestData.rows[0];
+    const data = latestData
     const detectedItems = JSON.parse(data?.local_detect || '[]');
+    console.log(data);
     return `
     <!DOCTYPE html>
     <html>
@@ -110,22 +111,22 @@ export async function exportNewView() {
             <h1>顯示資料</h1>
             <section>
                 <h3>氣象局</h3>
-                <p>氣溫: <span>${data?.cwa_temp}°C</span></p>
-                <p>濕度: <span>${data?.cwa_hum}%</span></p>
-                <p>最高氣溫 <span>${data?.cwa_daily_high}°C</span></p>
-                <p>最低氣溫 <span>${data?.cwa_daily_low}%</span></p>
+                <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
+                <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
+                <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
+                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}%</span></p>
             </section>
             <section>
                 <h3>本地</h3>
-                <p>氣溫: <span>${data?.local_temp}°C</span></p>
-                <p>濕度: <span>${data?.local_hum}%</span></p>
+                <p>氣溫: <span>${data?.local_temp || "N/A"}°C</span></p>
+                <p>濕度: <span>${data?.local_hum || "N/A"}%</span></p>
                 <p>蠕動馬達: <span>${data?.local_jistatus? "運轉中" : "停止"}</span></p>
-                <p>時間: <span>${data?.local_time}</span></p>
+                <p>時間: <span>${data?.local_time || "N/A"}</span></p>
             </section>
             <section>
                 <h3>GPS 定位</h3>
-                <p>經度: <span>${data?.local_gps_lat}</span></p>
-                <p>緯度: <span>${data?.local_gps_long}</span></p>
+                <p>經度: <span>${data?.local_gps_lat || "N/A"}</span></p>
+                <p>緯度: <span>${data?.local_gps_long || "N/A"}</span></p>
             </section>
             <section>
                 <h3>偵測到的物件</h3>
@@ -134,7 +135,7 @@ export async function exportNewView() {
                         .map(item => `
                                 <li>物件: ${item.name}</li>
                         `)
-                        .join('')}
+                        .join('') || "<li>無物件</li>"}
                 </ul>
             </section>
         </body>

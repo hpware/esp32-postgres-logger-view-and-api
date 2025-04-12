@@ -17,7 +17,7 @@ export async function saveInfo(
 ) {
     const save = await sql`
     INSERT INTO logger (
-        timestamp,
+        created_at,  /* Changed from timestamp to created_at */
         cwa_type,
         cwa_location,
         cwa_temp,
@@ -32,7 +32,7 @@ export async function saveInfo(
         local_jistatus,
         local_detect
     ) VALUES (
-        datetime('now'),
+        CURRENT_TIMESTAMP,  /* Changed from datetime('now') to CURRENT_TIMESTAMP */
         ${cwa_type},
         ${cwa_location},
         ${cwa_temp},
@@ -44,7 +44,7 @@ export async function saveInfo(
         ${local_gps_lat},
         ${local_gps_long},
         ${local_time},
-        ${local_jistatus ? 1 : 0},
+        ${local_jistatus ? true : false},
         ${JSON.stringify(local_detect)}
     )`
     return save;
