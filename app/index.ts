@@ -1,12 +1,32 @@
 import { sql } from "bun";
+import type { ServerWebSocket } from "bun";
 import index from "../index.html";
 import errorpage from "../errorpage.html";
 import { exportNewView } from "./components/exportView";
 import { saveInfo } from "./components/saveInfo";
+import webSocketJs from "../websocket";
 
+
+let clients = new Set<ServerWebSocket>();
+
+function broadcast(message: any) {
+    for (const client of clients) {
+        client.send(JSON.stringify(message));
+    }
+}
 
 Bun.serve({
     port: 3000,
+    websocket: {
+        open(ws) {
+            clients.add(ws);
+        },
+        close(ws) {
+            clients.delete(ws);
+        },
+        message(ws, message) {
+        }
+    },
     routes: {
         "/logger/": index,
         "/logger/view": async (req) => {
@@ -24,6 +44,7 @@ Bun.serve({
                 }
             });
         },
+        "/logger/websocket.js": webSocketJs,
         "/logger/store": async (req) => {
             if (req.method === "POST") {
                 try {

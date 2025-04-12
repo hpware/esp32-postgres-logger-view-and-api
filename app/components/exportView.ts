@@ -92,9 +92,8 @@ export async function exportNewView() {
     LIMIT 1
 `;
 
-    const data = latestData
+    const data = latestData[0]
     const detectedItems = JSON.parse(data?.local_detect || '[]');
-    console.log(data);
     return `
     <!DOCTYPE html>
     <html>
@@ -104,6 +103,9 @@ export async function exportNewView() {
             </title>
             <meta charset="UTF-8"/>
         </head>
+        <script>
+        ${javascript}
+        </script>
         <style>
         ${css}
         </style>
@@ -111,6 +113,7 @@ export async function exportNewView() {
             <h1>顯示資料</h1>
             <section>
                 <h3>氣象局</h3>
+                <p>天氣狀態: <span>${data?.cwa_type}</span></p>
                 <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
                 <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
                 <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
@@ -133,7 +136,7 @@ export async function exportNewView() {
                 <ul>
                     ${detectedItems
                         .map(item => `
-                                <li>物件: ${item.name}</li>
+                                <li>物件: ${item}</li>
                         `)
                         .join('') || "<li>無物件</li>"}
                 </ul>
