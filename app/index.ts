@@ -6,6 +6,7 @@ import { exportNewView } from "./components/exportView";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { jsonData } from "./components/jsonData";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -53,6 +54,9 @@ Bun.serve({
                     "Content-Type": "application/javascript"
                 }
             });
+        },
+        "/logger/json": async () => {
+            return Response.json(await jsonData);
         },
         "/logger/store": async (req) => {
             if (req.method === "POST") {

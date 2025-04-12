@@ -99,7 +99,6 @@ export async function exportNewView() {
         <head>
             <title>View database info</title>
             <meta charset="UTF-8"/>
-            <meta http-equiv="refresh", content="10, '#'"/>
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -112,11 +111,11 @@ export async function exportNewView() {
             <h1>顯示資料</h1>
             <section>
                 <h3>氣象局</h3>
-                <p>天氣狀態: <span>${data?.cwa_type}</span></p>
-                <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
-                <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
-                <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
-                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}°C</span></p>
+                <p>天氣狀態: <span data-value="cwa_type">${data?.cwa_type}</span></p>
+                <p>氣溫: <span data-value="cwa_temp">${data?.cwa_temp || "N/A"}°C</span></p>
+                <p>濕度: <span data-value="cwa_hum">${data?.cwa_hum || "N/A"}%</span></p>
+                <p>最高氣溫: <span data-value="cwa_daily_high">${data?.cwa_daily_high || "N/A"}°C</span></p>
+                <p>最低氣溫: <span data-value="cwa_daily_low">${data?.cwa_daily_low || "N/A"}°C</span></p>
             </section>
             <section>
                 <h3>本地</h3>
