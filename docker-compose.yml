@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+
+  postgresloggerapi:
+    image: postgres-logger-view-api
+    restart: always
+    ports: 
+      - 8833:3000
