@@ -4,7 +4,10 @@ import index from "../index.html";
 import errorpage from "../errorpage.html";
 import { exportNewView } from "./components/exportView";
 import { saveInfo } from "./components/saveInfo";
-import webSocketJs from "../websocket";
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
+const webSocketJs = readFileSync(resolve("websocket.js"), "utf8");
 
 
 let clients = new Set<ServerWebSocket>();
@@ -17,7 +20,7 @@ function broadcast(message: any) {
 
 Bun.serve({
     port: 3000,
-    websocket: {
+    /*websocket: {
         open(ws) {
             clients.add(ws);
         },
@@ -26,7 +29,7 @@ Bun.serve({
         },
         message(ws, message) {
         }
-    },
+    },*/
     routes: {
         "/logger/": index,
         "/logger/view": async (req) => {
@@ -44,7 +47,13 @@ Bun.serve({
                 }
             });
         },
-        "/logger/websocket.js": webSocketJs,
+        "/logger/websocketjs": async () => {
+            return new Response(webSocketJs, {
+                headers: {
+                    "Content-Type": "application/javascript"
+                }
+            });
+        },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
                 try {

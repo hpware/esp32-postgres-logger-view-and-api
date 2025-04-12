@@ -2,7 +2,6 @@ import { sql } from "bun";
 
 
 const css = `
-/* Modern Reset */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -98,14 +97,14 @@ export async function exportNewView() {
     <!DOCTYPE html>
     <html>
         <head>
-            <title>
-                View database info
-            </title>
+            <title>View database info</title>
             <meta charset="UTF-8"/>
+            <meta http-equiv="refresh", content="10, '#'"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="og:author:email" content="hw@yuanhau.com">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-        <script>
-        ${javascript}
-        </script>
+        <script src="/logger/websocketjs"></script>
         <style>
         ${css}
         </style>
@@ -117,7 +116,7 @@ export async function exportNewView() {
                 <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
                 <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
                 <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
-                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}%</span></p>
+                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}°C</span></p>
             </section>
             <section>
                 <h3>本地</h3>
