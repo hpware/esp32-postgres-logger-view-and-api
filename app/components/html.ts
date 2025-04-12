@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+export default function s() {
+    return `
+    <!DOCTYPE html>
     <html>
         <head>
             <title>View database info</title>
@@ -6,8 +8,8 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <!-- Remove script from head to avoid loading before DOM is ready -->
         </head>
+        <script src="../public/websocket.js"></script>
         <style>
             *, *::before, *::after {
   box-sizing: border-box;
@@ -117,8 +119,7 @@ li {
                 </ul>
             </section>
             
-            <!-- Move scripts to end of body and use relative path -->
-            <script src="../public/websocket.js"></script>
+            <script src="/logger/public/websocket.js"></script>
             <script>
                 // Initialize an array to store detected items
                 let detectedItems = [];
@@ -149,7 +150,7 @@ li {
                 // Listen for the data-updated event from websocket.js
                 document.addEventListener('data-updated', function(event) {
                     const data = event.detail;
-                    console.log('Received updated data in UI handler:', data);
+                    console.log('Received updated data:', data);
                     
                     // Update all elements with data-value attributes
                     document.querySelectorAll('[data-value]').forEach(element => {
@@ -171,7 +172,7 @@ li {
                         
                         if (detectedItems.length > 0) {
                             itemsList.innerHTML = detectedItems
-                                .map(item => `<li>物件: ${item}</li>`)
+                                .map(item => \`<li>物件: \${item}</li>\`)
                                 .join('');
                         } else {
                             itemsList.innerHTML = '<li>無物件</li>';
@@ -181,3 +182,5 @@ li {
             </script>
         </body>
     </html>
+`
+}

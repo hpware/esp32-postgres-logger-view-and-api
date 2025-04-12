@@ -2,7 +2,7 @@ import { sql } from "bun";
 import type { ServerWebSocket } from "bun";
 import index from "./index.html";
 import errorpage from "./errorpage.html";
-import { exportNewView } from "./components/exportView";
+import exportNewView from "./components/html";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
 import { join } from "path";
@@ -68,15 +68,7 @@ Bun.serve({
     routes: {
         "/logger/": index,
         "/logger/view": async (req) => {
-            const stream = new ReadableStream({
-                async start(controller) {
-                    const content = await exportNewView();
-                    controller.enqueue(content);
-                    controller.close();
-                }
-            });
-            
-            return new Response(stream, {
+            return new Response(await exportNewView(), {
                 headers: {
                     "Content-Type": "text/html" 
                 }
