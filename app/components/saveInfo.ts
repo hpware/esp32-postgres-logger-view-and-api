@@ -14,38 +14,43 @@ export async function saveInfo(
     local_time: string,
     local_jistatus: boolean,
     local_detect: Array<any>  
-) {
-    const save = await sql`
-    INSERT INTO logger (
-        created_at,  /* Changed from timestamp to created_at */
-        cwa_type,
-        cwa_location,
-        cwa_temp,
-        cwa_hum,
-        cwa_daily_high,
-        cwa_daily_low,
-        local_temp,
-        local_hum,
-        local_gps_lat,
-        local_gps_long,
-        local_time,
-        local_jistatus,
-        local_detect
-    ) VALUES (
-        CURRENT_TIMESTAMP,  /* Changed from datetime('now') to CURRENT_TIMESTAMP */
-        ${cwa_type},
-        ${cwa_location},
-        ${cwa_temp},
-        ${cwa_hum},
-        ${cwa_daliyHigh},
-        ${cwa_daliyLow},
-        ${local_temp},
-        ${local_hum},
-        ${local_gps_lat},
-        ${local_gps_long},
-        ${local_time},
-        ${local_jistatus ? true : false},
-        ${JSON.stringify(local_detect)}
-    )`
-    return save;
+): Promise<boolean> {
+    try {
+        const save = await sql`
+        INSERT INTO logger (
+            created_at,  /* Changed from timestamp to created_at */
+            cwa_type,
+            cwa_location,
+            cwa_temp,
+            cwa_hum,
+            cwa_daily_high,
+            cwa_daily_low,
+            local_temp,
+            local_hum,
+            local_gps_lat,
+            local_gps_long,
+            local_time,
+            local_jistatus,
+            local_detect
+        ) VALUES (
+            CURRENT_TIMESTAMP,  /* Changed from datetime('now') to CURRENT_TIMESTAMP */
+            ${cwa_type},
+            ${cwa_location},
+            ${cwa_temp},
+            ${cwa_hum},
+            ${cwa_daliyHigh},
+            ${cwa_daliyLow},
+            ${local_temp},
+            ${local_hum},
+            ${local_gps_lat},
+            ${local_gps_long},
+            ${local_time},
+            ${local_jistatus ? true : false},
+            ${JSON.stringify(local_detect)}
+        )`
+        return true;
+    } catch (error) {
+        console.error("Error saving data:", error);
+        return false;
+    }
 }

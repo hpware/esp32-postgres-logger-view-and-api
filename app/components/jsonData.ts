@@ -1,17 +1,11 @@
-import { sql } from "bun"; 
+import { sql } from "bun";
 
 export async function jsonData() {
-
-    const latestData = await sql`
-    SELECT * FROM logger 
-    ORDER BY id DESC 
-    LIMIT 1
-`;
-
-    const data = latestData[0]
-    const detectedItems = JSON.parse(data?.local_detect || '[]');
-    return {
-        data: data,
-        detectedItems: detectedItems
+    try {
+        const results = await sql`SELECT * FROM logger ORDER BY created_at DESC LIMIT 100`;
+        return Array.isArray(results) ? results : [];
+    } catch (error) {
+        console.error("Error fetching JSON data:", error);
+        return [];
     }
 }

@@ -10,27 +10,61 @@ import { jsonData } from "./components/jsonData";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
-
-let clients = new Set<ServerWebSocket>();
+let clients = new Set<ServerWebSocket<unknown>>();
 
 function broadcast(message: any) {
+    console.log(`Broadcasting to ${clients.size} clients`);
     for (const client of clients) {
-        client.send(JSON.stringify(message));
+        try {
+            client.send(JSON.stringify(message));
+        } catch (error) {
+            console.error("Failed to send to a client:", error);
+        }
     }
 }
 
 Bun.serve({
     port: 3000,
-    /*websocket: {
+    fetch(req, server) {
+        const url = new URL(req.url);
+        if (url.pathname === "/logger/" && server.upgrade(req)) {
+            return; // Upgraded to WebSocket
+        }
+        // Continue with regular HTTP handling
+        return server.fetch(req);
+    },
+    websocket: {
         open(ws) {
             clients.add(ws);
+            console.log("Client connected, total clients:", clients.size);
+            // Send current data to newly connected client
+            jsonData().then(data => {
+                try {
+                    ws.send(JSON.stringify({
+                        type: "initial",
+                        data: data
+                    }));
+                    console.log("Sent initial data to client");
+                } catch (error) {
+                    console.error("Failed to send initial data:", error);
+                }
+            }).catch(err => {
+                console.error("Error getting JSON data:", err);
+            });
         },
         close(ws) {
             clients.delete(ws);
+            console.log("Client disconnected, total clients:", clients.size);
         },
         message(ws, message) {
+            try {
+                const data = JSON.parse(message.toString());
+                console.log("Received message:", data);
+            } catch (error) {
+                console.error("Error parsing WebSocket message:", error);
+            }
         }
-    },*/
+    },
     routes: {
         "/logger/": index,
         "/logger/view": async (req) => {
@@ -56,7 +90,13 @@ Bun.serve({
             });
         },
         "/logger/json": async () => {
-            return Response.json(await jsonData);
+            try {
+                const data = await jsonData();
+                return Response.json(data);
+            } catch (error) {
+                console.error("Error getting JSON data:", error);
+                return Response.json({ error: "Failed to get data" }, { status: 500 });
+            }
         },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
@@ -77,8 +117,21 @@ Bun.serve({
                         data.local_jistatus,
                         data.local_detect
                     );
+                    
+                    // Broadcast the new data to all connected clients
+                        try {
+                            const updatedData = await jsonData();
+                            broadcast({
+                                type: "update",
+                                data: updatedData
+                            });
+                            console.log("Broadcast sent after new data saved");
+                        } catch (error) {
+                            console.error("Error broadcasting update:", error);
+                        }
                     return Response.json({ success: true, save: save });
                 } catch (error) {
+                    console.error("Error in /logger/store:", error);
                     return Response.json({ 
                         error: "Invalid JSON format",
                         details: error.message 
