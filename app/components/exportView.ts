@@ -134,7 +134,6 @@ export async function exportNewView() {
                 </section>
                 <section>
                     <h3>偵測到的物件</h3>
-                    {/* Consider adding an ID here if the list needs dynamic updates */}
                     <ul id="detected_list">
                         ${
                           detectedItems.length > 0
@@ -149,16 +148,16 @@ export async function exportNewView() {
           <script>
               document.addEventListener('DOMContentLoaded', (event) => {
                 console.log("DOM fully loaded and parsed.");
-                  const cwaType = document.getElementById("type"),
-                  const cwaTemp = document.getElementById("temp"),
-                  const cwaHum =  document.getElementById("hum"),
-                  const cwaDailyHigh = document.getElementById("daily_high"),
-                  const cwaDailyLow = document.getElementById("daily_low"),
-                  const localTemp = document.getElementById("local_temp"),
-                  const localHum = document.getElementById("local_hum"),
-                  const motorStatus = document.getElementById("motor_status"),
-                  const gpsLat = document.getElementById("gps_lat"),
-                  const gpsLong = document.getElementById("gps_long"),
+                  const cwaType = document.getElementById("type");
+                  const cwaTemp = document.getElementById("temp");
+                  const cwaHum =  document.getElementById("hum");
+                  const cwaDailyHigh = document.getElementById("daily_high");
+                  const cwaDailyLow = document.getElementById("daily_low");
+                  const localTemp = document.getElementById("local_temp");
+                  const localHum = document.getElementById("local_hum");
+                  const motorStatus = document.getElementById("motor_status");
+                  const gpsLat = document.getElementById("gps_lat");
+                  const gpsLong = document.getElementById("gps_long");
                   const detectedList = document.getElementById("detected_list")
                 };
                 console.log(cwaType);
