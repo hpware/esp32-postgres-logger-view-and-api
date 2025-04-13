@@ -111,6 +111,7 @@ export async function exportNewView() {
         </style>
         <body>
             <h1>顯示資料</h1>
+            <!--時間: ${data?.created_at}-->
             <section>
                 <h3>氣象局</h3>
                 <p>天氣狀態: <span>${data?.cwa_type}</span></p>
