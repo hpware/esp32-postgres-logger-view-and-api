@@ -1,5 +1,5 @@
 import { sql } from "bun"; 
-import { jsonData } from "./jsonData";
+
 
 const css = `
 *, *::before, *::after {
@@ -83,26 +83,28 @@ li {
 }
 `
 
-export async function exportNewView(): Promise<string> {
-    const data = await jsonData();
-    // Get the most recent entry
-    const latest = data.length > 0 ? data[0] : null;
-    
-    // Process detected items if they exist
-    let detectedItems = [];
-    if (latest && latest.local_detect) {
-        try {
-            const detected = JSON.parse(latest.local_detect);
-            detectedItems = Array.isArray(detected) ? detected : [];
-        } catch (e) {
-            console.error("Error parsing detected items:", e);
-        }
-    }
+export async function exportNewView() {
 
+    const latestData = await sql`
+    SELECT * FROM logger 
+    ORDER BY id DESC 
+    LIMIT 1
+`;
+
+    const data = latestData[0]
+    const detectedItems = JSON.parse(data?.local_detect || '[]');
+    console.log(data);
     return `
     <!DOCTYPE html>
     <html>
         <head>
+            <title>View database info</title>
+            <meta charset="UTF-8"/>
+            <meta http-equiv="refresh", content="10, '#'"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="og:author:email" content="hw@yuanhau.com">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
         <script src="/logger/websocketjs"></script>
         <style>
         ${css}
@@ -111,18 +113,19 @@ export async function exportNewView(): Promise<string> {
             <h1>顯示資料</h1>
             <section>
                 <h3>氣象局</h3>
-                <p>天氣狀態: <span data-value="cwa_type">${data?.cwa_type}</span></p>
-                <p>氣溫: <span data-value="cwa_temp">${data?.cwa_temp || "N/A"}°C</span></p>
-                <p>濕度: <span data-value="cwa_hum">${data?.cwa_hum || "N/A"}%</span></p>
-                <p>最高氣溫: <span data-value="cwa_daily_high">${data?.cwa_daily_high || "N/A"}°C</span></p>
-                <p>最低氣溫: <span data-value="cwa_daily_low">${data?.cwa_daily_low || "N/A"}°C</span></p>
+                <p>天氣狀態: <span>${data?.cwa_type}</span></p>
+                <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
+                <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
+                <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
+                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}°C</span></p>
             </section>
             <section>
                 <h3>本地</h3>
                 <p>氣溫: <span>${data?.local_temp || "N/A"}°C</span></p>
                 <p>濕度: <span>${data?.local_hum || "N/A"}%</span></p>
                 <p>蠕動馬達: <span>${data?.local_jistatus? "運轉中" : "停止"}</span></p>
-             </section>
+                <p>時間: <span>${data?.local_time || "N/A"}</span></p>
+            </section>
             <section>
                 <h3>GPS 定位</h3>
                 <p>經度: <span>${data?.local_gps_lat || "N/A"}</span></p>

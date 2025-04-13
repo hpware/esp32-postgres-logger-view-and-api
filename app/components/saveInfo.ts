@@ -48,6 +48,8 @@ export async function saveInfo(
             ${local_jistatus ? true : false},
             ${JSON.stringify(local_detect)}
         )`
+        console.log(save);
+        console.log("ok?");
         return true;
     } catch (error) {
         console.error("Error saving data:", error);

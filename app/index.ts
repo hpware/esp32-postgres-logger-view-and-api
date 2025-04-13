@@ -2,11 +2,13 @@ import { sql } from "bun";
 import type { ServerWebSocket } from "bun";
 import index from "./index.html";
 import errorpage from "./errorpage.html";
-import exportNewView from "./components/html";
+import html2 from "./components/html";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
 import { join } from "path";
 import { jsonData } from "./components/jsonData";
+import exportNewVideoView from "./components/exportVideoView";
+import { exportNewView } from "./components/exportView";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -71,6 +73,22 @@ Bun.serve({
             return new Response(await exportNewView(), {
                 headers: {
                     "Content-Type": "text/html" 
+                }
+            });
+        },
+        "/logger/viewws": async (req) => {
+            return new Response(await html2(), {
+                headers: {
+                    "Content-Type": "text/html" 
+                }
+            });
+        },
+        
+        "/logger/view/:ipport": async (req) => {
+            const ipport = req.params.ipport;
+            return new Response(await exportNewVideoView(ipport), {
+                headers: {
+                    "Content-Type": "text/html"
                 }
             });
         },
