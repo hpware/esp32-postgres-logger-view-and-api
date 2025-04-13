@@ -93,6 +93,7 @@ export async function exportNewView() {
 
     const data = latestData[0]
     const detectedItems = JSON.parse(data?.local_detect || '[]');
+    
     console.log(data);
     return `
     <!DOCTYPE html>
@@ -100,7 +101,6 @@ export async function exportNewView() {
         <head>
             <title>View database info</title>
             <meta charset="UTF-8"/>
-            <meta http-equiv="refresh", content="10, '#'"/>
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -114,35 +114,67 @@ export async function exportNewView() {
             <!--時間: ${data?.created_at}-->
             <!--ID: ${data?.id}-->
             <section>
-                <h3>氣象局</h3>
-                <p>天氣狀態: <span>${data?.cwa_type}</span></p>
-                <p>氣溫: <span>${data?.cwa_temp || "N/A"}°C</span></p>
-                <p>濕度: <span>${data?.cwa_hum || "N/A"}%</span></p>
-                <p>最高氣溫 <span>${data?.cwa_daily_high || "N/A"}°C</span></p>
-                <p>最低氣溫 <span>${data?.cwa_daily_low || "N/A"}°C</span></p>
-            </section>
-            <section>
-                <h3>本地</h3>
-                <p>氣溫: <span>${data?.local_temp || "N/A"}°C</span></p>
-                <p>濕度: <span>${data?.local_hum || "N/A"}%</span></p>
-                <p>蠕動馬達: <span>${data?.local_jistatus? "運轉中" : "停止"}</span></p>
-             </section>
-            <section>
-                <h3>GPS 定位</h3>
-                <p>經度: <span>${data?.local_gps_lat || "N/A"}</span></p>
-                <p>緯度: <span>${data?.local_gps_long || "N/A"}</span></p>
-            </section>
-            <section>
-                <h3>偵測到的物件</h3>
-                <ul>
-                    ${detectedItems
-                        .map(item => `
-                                <li>物件: ${item}</li>
-                        `)
-                        .join('') || "<li>無物件</li>"}
-                </ul>
+                    <h3>氣象局</h3>
+                    <p>天氣狀態: <span id="type">${data?.cwa_type || "N/A"}</span></p>
+                    <p>氣溫: <span id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
+                    <p>濕度: <span id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
+                    <p>最高氣溫 <span id="daily_high">${data?.cwa_daily_high ?? "N/A"}°C</span></p>
+                    <p>最低氣溫 <span id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span></p>
+                </section>
+                <section>
+                    <h3>本地</h3>
+                    <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
+                    <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
+                    <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
+                 </section>
+                <section>
+                    <h3>GPS 定位</h3>
+                    <p>經度: <span id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
+                    <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
+                </section>
+                <section>
+                    <h3>偵測到的物件</h3>
+                    {/* Consider adding an ID here if the list needs dynamic updates */}
+                    <ul id="detected_list">
+                        ${
+                          detectedItems.length > 0
+                            ? detectedItems
+                                .map((item) => `<li>物件: ${item}</li>`)
+                                .join("")
+                            : "<li>無物件</li>"
+                        }
+                    </ul>
             </section>
         </body>
+          <script>
+              document.addEventListener('DOMContentLoaded', (event) => {
+                console.log("DOM fully loaded and parsed.");
+                  const cwaType = document.getElementById("type"),
+                  const cwaTemp = document.getElementById("temp"),
+                  const cwaHum =  document.getElementById("hum"),
+                  const cwaDailyHigh = document.getElementById("daily_high"),
+                  const cwaDailyLow = document.getElementById("daily_low"),
+                  const localTemp = document.getElementById("local_temp"),
+                  const localHum = document.getElementById("local_hum"),
+                  const motorStatus = document.getElementById("motor_status"),
+                  const gpsLat = document.getElementById("gps_lat"),
+                  const gpsLong = document.getElementById("gps_long"),
+                  const detectedList = document.getElementById("detected_list")
+                };
+                console.log(cwaType);
+                console.log(cwaTemp);
+                console.log(cwaHum);
+                console.log(cwaDailyHigh);
+                console.log(cwaDailyLow);
+                console.log(localTemp);
+                console.log(localHum);
+                console.log(motorStatus);
+                console.log(gpsLat);
+                console.log(gpsLong);
+                console.log(detectedList);
+
+              });
+          </script>
     </html>
     `
 }
