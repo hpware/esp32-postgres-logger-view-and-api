@@ -112,6 +112,7 @@ export async function exportNewView() {
         <body>
             <h1>顯示資料</h1>
             <!--時間: ${data?.created_at}-->
+            <!--ID: ${data?.id}-->
             <section>
                 <h3>氣象局</h3>
                 <p>天氣狀態: <span>${data?.cwa_type}</span></p>
@@ -125,8 +126,7 @@ export async function exportNewView() {
                 <p>氣溫: <span>${data?.local_temp || "N/A"}°C</span></p>
                 <p>濕度: <span>${data?.local_hum || "N/A"}%</span></p>
                 <p>蠕動馬達: <span>${data?.local_jistatus? "運轉中" : "停止"}</span></p>
-                <p>時間: <span>${data?.local_time || "N/A"}</span></p>
-            </section>
+             </section>
             <section>
                 <h3>GPS 定位</h3>
                 <p>經度: <span>${data?.local_gps_lat || "N/A"}</span></p>
