@@ -118,56 +118,14 @@ export default async function exportNewVideoView(ipport: string) {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <script type="text/javascript" src="https://flashphoner.com/downloads/builds/flashphoner_client/wcs_api-2.0/current/flashphoner.js"></script>
         </head>
-        <script>
-        var SESSION_STATUS = Flashphoner.constants.SESSION_STATUS;
-var STREAM_STATUS = Flashphoner.constants.STREAM_STATUS;
-var session;
-var PRELOADER_URL = "https://github.com/flashphoner/flashphoner_client/raw/wcs_api-2.0/examples/demo/dependencies/media/preloader.mp4";
-function init_api() {
-    Flashphoner.init({});
-    //Connect to WCS server over websockets
-    session = Flashphoner.createSession({
-        urlServer: "wss://demo.flashphoner.com:8443" //specify the address of your WCS
-    }).on(SESSION_STATUS.ESTABLISHED, function(session) {
-        console.log("ESTABLISHED");
-    });
- 
-    playBtn.onclick = playClick;
-}
-var Browser = {
-    isSafari: function() {
-        return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    },
-}
- 
-function playClick() {
-    if (Browser.isSafari()) {
-        Flashphoner.playFirstVideo(document.getElementById("play"), true, PRELOADER_URL).then(function() {
-            playStream();
-        });
-    } else {
-        playStream();
-    }
-}
-function playStream() {
-    session.createStream({
-        name: "rtsp://${ipport}", //specify the RTSP stream address
-        display: document.getElementById("play"),
-    }).play();
-}
-</script>
         <style>
         ${css}
         </style>
         <body>
             <section>
             <h3>Stream</h3>
-            <div class="fp-Video">
-   <div id="myVideo" class="display"></div>
-</div>
-<button id="playBtn">PLAY</button>
+              <img src="${ipport}" alt="Video stream"></img>
             </section>
             <iframe src="/logger/view" 
         style="border-style: none; height: 1200px; max-width:1400px; width:100%; overflow: hidden"
