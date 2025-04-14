@@ -126,6 +126,9 @@ export async function exportNewView() {
                     <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
                     <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
                     <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
+                    <p>蠕動馬達 ${
+                      data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                    }
                  </section>
                 <section>
                     <h3>GPS 定位</h3>
@@ -170,6 +173,14 @@ export async function exportNewView() {
                 console.log(gpsLat);
                 console.log(gpsLong);
                 console.log(detectedList);
+          </script>
+          <script>
+                  async function fetchRemote() {
+                        const req = await fetch("/logger/jistatus?change=${data?.local_jistatus}");
+                        const res = await req.text();
+                        console.log(res);
+                        return res;
+                  }
           </script>
     </html>
     `
