@@ -105,8 +105,7 @@ export async function exportNewView() {
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-        <script src="/logger/websocketjs"></script>
-        <style>
+         <style>
         ${css}
         </style>
         <body>
@@ -115,6 +114,7 @@ export async function exportNewView() {
             <!--ID: ${data?.id}-->
             <section>
                     <h3>氣象局</h3>
+                    <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>
                     <p>天氣狀態: <span id="type">${data?.cwa_type || "N/A"}</span></p>
                     <p>氣溫: <span id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
                     <p>濕度: <span id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
@@ -146,7 +146,6 @@ export async function exportNewView() {
             </section>
         </body>
           <script>
-              document.addEventListener('DOMContentLoaded', (event) => {
                 console.log("DOM fully loaded and parsed.");
                   const cwaType = document.getElementById("type");
                   const cwaTemp = document.getElementById("temp");
@@ -171,8 +170,6 @@ export async function exportNewView() {
                 console.log(gpsLat);
                 console.log(gpsLong);
                 console.log(detectedList);
-
-              });
           </script>
     </html>
     `

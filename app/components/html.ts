@@ -9,7 +9,7 @@ export default function s() {
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-        <script src="../public/websocket.js"></script>
+        <script src="/logger/websocketjs"></script>
         <style>
             *, *::before, *::after {
   box-sizing: border-box;
