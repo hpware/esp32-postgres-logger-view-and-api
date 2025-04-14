@@ -136,14 +136,14 @@ export async function exportNewView() {
                     <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
                 </section>
                 <section>
-                    <h3>偵測到的物件</h3>
+                    <h3>偵測到的鳥</h3>
                     <ul id="detected_list">
                         ${
                           detectedItems.length > 0
                             ? detectedItems
-                                .map((item) => `<li>物件: ${item}</li>`)
+                                .map((item) => `<li> ${item}</li>`)
                                 .join("")
-                            : "<li>無物件</li>"
+                            : "<li>沒有偵測到</li>"
                         }
                     </ul>
             </section>
@@ -176,7 +176,7 @@ export async function exportNewView() {
           </script>
           <script>
                   async function fetchRemote() {
-                        const req = await fetch("/logger/jistatus?change=${data?.local_jistatus}");
+                        const req = await fetch("/logger/jistatus/${data?.local_jistatus}");
                         const res = await req.text();
                         console.log(res);
                         return res;
