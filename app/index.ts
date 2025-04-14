@@ -9,6 +9,7 @@ import { join } from "path";
 import { jsonData } from "./components/jsonData";
 import exportNewVideoView from "./components/exportVideoView";
 import { exportNewView } from "./components/exportView";
+import { exportChangeType } from "./components/exportChangeType";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -83,7 +84,14 @@ Bun.serve({
                 }
             });
         },
-        
+        "/logger/jistatus/:try": async (req) => {
+            const trybool = req.params.try;
+            return new Response(await exportChangeType(), {
+                headers: {
+                    "Content-Type": "text/html"
+                }
+            })
+        },
         "/logger/view/:ipport": async (req) => {
             const ipport = req.params.ipport;
             return new Response(await exportNewVideoView(ipport), {
