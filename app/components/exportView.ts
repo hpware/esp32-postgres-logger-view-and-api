@@ -104,7 +104,7 @@ export async function exportNewView() {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta http-equiv="refresh" content="30, ''"/>s
+            <meta http-equiv="refresh" content="30, '#s'"/>s
         </head>
          <style>
         ${css}
