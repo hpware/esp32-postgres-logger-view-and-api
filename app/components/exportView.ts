@@ -109,6 +109,10 @@ export async function exportNewView() {
          <style>
         ${css}
         </style>
+        <script>
+        console.log("ID: ${data?.id}");
+        console.log("Date: ${data?.created_at}")
+        </script>
         <body>
             <h1>顯示資料</h1>
             <!--時間: ${data?.created_at}-->
