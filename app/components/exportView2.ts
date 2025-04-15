@@ -95,6 +95,18 @@ li {
   border-radius: 6px;
   background: #f1f5f9;
 }
+button {
+  background-color: var(--primary);
+  color:white;
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  transition: all 300ms ease-in-out;
+}
+button:hover {
+  color: white;
+  background-color:rgb(31, 80, 185);
+}
 `
 
 export async function exportNewView2(ipport: string) {
@@ -129,7 +141,7 @@ export async function exportNewView2(ipport: string) {
         <script>console.log("ID: ${data?.id}");console.log("Date: ${formatTime(String(data?.created_at))}")</script>
         <body>
             <h1>顯示資料</h1>
-            <a href="http://${ipport}">串流</a>
+            <a href="http://${ipport}"><button>即使影像</button></a>
             <section>
                     <h3>氣象局</h3>
                     <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>

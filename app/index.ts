@@ -91,8 +91,7 @@ Bun.serve({
                 }
             });
         },
-        "/logger/jistatus/:try": async (req) => {
-            const trybool = req.params.try;
+        "/logger/jistatus": async () => {
             return new Response(await exportChangeType(), {
                 headers: {
                     "Content-Type": "text/html"

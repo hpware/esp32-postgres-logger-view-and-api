@@ -53,11 +53,11 @@ export async function saveInfo(
         console.log("ok?");
 
         const latestData = await sql`
-        SELECT status FROM jistatus 
+        SELECT * FROM jistatus 
         ORDER BY id DESC 
         LIMIT 1
         `;    
-        return latestData
+        return latestData.status
     } catch (error) {
         console.error("Error saving data:", error);
         return false;
