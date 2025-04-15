@@ -25,15 +25,15 @@ CREATE TABLE IF NOT EXISTS detect (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     item text not null,
-    imageURL text not null
+    imageURL text not null,
     detected_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 )
 `
-
+/*
 const create3 = await sql`
 create table if not exists jistatus (
 
 )
-`
+`*/
 
 console.log("Database schema created successfully");
