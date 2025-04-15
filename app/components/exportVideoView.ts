@@ -125,7 +125,7 @@ export default async function exportNewVideoView(ipport: string) {
         <body>
             <section>
             <h3>Stream</h3>
-              <img src="${ipport}" alt="Video stream"></img>
+              <img src="https://${ipport}/video_feed" alt="Video stream"></img>
             </section>
             <iframe src="/logger/view" 
         style="border-style: none; height: 1200px; max-width:1400px; width:100%; overflow: hidden"

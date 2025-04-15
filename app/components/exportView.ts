@@ -166,7 +166,7 @@ export async function exportNewView() {
                         <br/>
                         <!--${item}-->
                       </div><!--</a>-->
-                    </li>`).join("") : "<li>沒有偵測到</li>"
+                    </li>`).join("") : "<li>尚未偵測到物種</li>"
                     }
                         <!--${
                           detectedItems.length > 0
@@ -174,7 +174,7 @@ export async function exportNewView() {
                                 .map((item) => `<li> ${item}</li>`)
                                 .join("")
                             : "<li>沒有偵測到</li>"
-                        }-->
+                        }-->  
                     </ul>
             </section>
         </body>
