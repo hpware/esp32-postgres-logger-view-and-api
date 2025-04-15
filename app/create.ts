@@ -29,11 +29,12 @@ CREATE TABLE IF NOT EXISTS detect (
     detected_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 )
 `
-/*
+
 const create3 = await sql`
 create table if not exists jistatus (
-
+    id SERIAL PRIMARY KEY,
+    status boolean not null
 )
-`*/
+`
 
 console.log("Database schema created successfully");

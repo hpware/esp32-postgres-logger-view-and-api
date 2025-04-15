@@ -159,13 +159,13 @@ export async function exportNewView() {
                     ${getList.length > 0
                       ? getList.map((item) => `
                     <li>
-                      <a href="${item.imageURL}"><div>
+                      <!--<a href="${item.imageURL}">--><div>
                         <span>${item.item}</span>
                         <br/>
                         偵測時間: ${formatTime(String(item?.created_at))}
                         <br/>
                         <!--${item}-->
-                      </div></a>
+                      </div><!--</a>-->
                     </li>`).join("") : "<li>沒有偵測到</li>"
                     }
                         <!--${

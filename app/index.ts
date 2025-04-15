@@ -138,6 +138,9 @@ Bun.serve({
                 return Response.json({ error: "Failed to get data" }, { status: 500 });
             }
         },
+        "logger/hub8735datats": async () => {
+            
+        },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
                 try {
@@ -158,7 +161,7 @@ Bun.serve({
                         data.local_detect,
                     );
 
-                    // Broadcast the new data to all connected clients
+                    /*// Broadcast the new data to all connected clients
                         try {
                             const updatedData = await jsonData();
                             broadcast({
@@ -168,13 +171,13 @@ Bun.serve({
                             console.log("Broadcast sent after new data saved");
                         } catch (error) {
                             console.error("Error broadcasting update:", error);
-                        }
-                    return Response.json({ success: true, save: save });
+                        }*/
+                    return Response.json({ success: true, jistatus: save });
                 } catch (error) {
                     console.error("Error in /logger/store:", error);
                     return Response.json({ 
                         error: "Invalid JSON format",
-                        details: error.message 
+                        details: error.message,
                     }, { status: 400 });
                 }
             }
