@@ -104,7 +104,7 @@ export async function exportNewView() {
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="og:author:email" content="hw@yuanhau.com">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <meta http-equiv="refresh" content="30, '#s'"/>s
+            <meta http-equiv="refresh" content="30, '#'"/>
         </head>
          <style>
         ${css}
@@ -181,7 +181,7 @@ export async function exportNewView() {
           </script>
           <script>
                   async function fetchRemote() {
-                        const req = await fetch("/logger/jistatus/${data?.local_jistatus}");
+                        const req = await fetch("/logger/jistatus");
                         const res = await req.text();
                         console.log(res);
                         return res;
