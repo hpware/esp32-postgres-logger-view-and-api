@@ -156,16 +156,16 @@ export async function exportNewView() {
                     <h3>偵測到的物種</h3>
                     <ul id="detected_list">
                     <!--${String(getList)}-->
-                    ${detectedItems.length > 0
-                      ? detectedItems.map((item) => `
+                    ${getList.length > 0
+                      ? getList.map((item) => `
                     <li>
-                      <div>
-                        <span>五色鳥</span>
+                      <a href="${item.imageURL}"><div>
+                        <span>${item.item}</span>
                         <br/>
-                        偵測時間: ${formatTime(String(data?.created_at))}
+                        偵測時間: ${formatTime(String(item?.created_at))}
                         <br/>
                         <!--${item}-->
-                      </div>
+                      </div></a>
                     </li>`).join("") : "<li>沒有偵測到</li>"
                     }
                         <!--${

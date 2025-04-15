@@ -14,7 +14,6 @@ export async function saveInfo(
     local_time: string,
     local_jistatus: boolean,
     local_detect: Array<any>,
-    local_detect_2: string
 ): Promise<boolean> {
     try {
         const save = await sql`
@@ -55,29 +54,5 @@ export async function saveInfo(
     } catch (error) {
         console.error("Error saving data:", error);
         return false;
-    }
-    if (local_detect_2) {
-        const uuid = randomUUIDv7();
-        try {
-        const save2 = await sql`
-        insert into detect (
-            item
-            created_at
-            detected_at
-            imageURL
-        )
-        VALUES (
-            ${local_detect_2},
-            CURRENT_TIMESTAMP,
-            CURRENT_TIMESTAMP,
-            "https://hpg7-img.sch2.top/040zk/${uuid}"
-        )
-        `
-        console.log(save2);
-        return true;
-    }  catch (e) {
-        console.log(e);
-        return false
-    }
     }
 }
