@@ -91,6 +91,11 @@ export async function exportNewView() {
     LIMIT 1
 `;
 
+    const getList = await sql`
+      SELECT * from detect
+      order by id DESC
+    `
+
     const data = latestData[0]
     const detectedItems = JSON.parse(data?.local_detect || '[]');
     
@@ -106,17 +111,10 @@ export async function exportNewView() {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta http-equiv="refresh" content="30, '#'"/>
         </head>
-         <style>
-        ${css}
-        </style>
-        <script>
-        console.log("ID: ${data?.id}");
-        console.log("Date: ${data?.created_at}")
-        </script>
+         <style>${css}</style>
+        <script>console.log("ID: ${data?.id}");console.log("Date: ${data?.created_at}")</script>
         <body>
             <h1>顯示資料</h1>
-            <!--時間: ${data?.created_at}-->
-            <!--ID: ${data?.id}-->
             <section>
                     <h3>氣象局</h3>
                     <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>
@@ -143,13 +141,14 @@ export async function exportNewView() {
                 <section>
                     <h3>偵測到的鳥</h3>
                     <ul id="detected_list">
-                        ${
+                    <!--${String(getList)}-->
+                        <!--${
                           detectedItems.length > 0
                             ? detectedItems
                                 .map((item) => `<li> ${item}</li>`)
                                 .join("")
                             : "<li>沒有偵測到</li>"
-                        }
+                        }-->
                     </ul>
             </section>
         </body>
