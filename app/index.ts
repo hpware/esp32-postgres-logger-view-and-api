@@ -11,6 +11,7 @@ import exportNewVideoView from "./components/exportVideoView";
 import { exportNewView } from "./components/exportView";
 import { exportChangeType } from "./components/exportChangeType";
 import uploadImage from "./components/uploadImage";
+import { exportNewView2 } from "./components/exportView2";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -116,7 +117,7 @@ Bun.serve({
         },
         "/logger/view/:ipport": async (req) => {
             const ipport = req.params.ipport;
-            return new Response(await exportNewVideoView(ipport), {
+            return new Response(await exportNewView2(ipport), {
                 headers: {
                     "Content-Type": "text/html"
                 }
