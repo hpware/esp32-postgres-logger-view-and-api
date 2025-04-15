@@ -57,7 +57,7 @@ export async function saveInfo(
         ORDER BY id DESC 
         LIMIT 1
         `;    
-        return latestData.status
+        return latestData[0]?.status
     } catch (error) {
         console.error("Error saving data:", error);
         return false;
