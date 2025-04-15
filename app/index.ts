@@ -5,11 +5,12 @@ import errorpage from "./errorpage.html";
 import html2 from "./components/html";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { join, matchesGlob } from "path";
 import { jsonData } from "./components/jsonData";
 import exportNewVideoView from "./components/exportVideoView";
 import { exportNewView } from "./components/exportView";
 import { exportChangeType } from "./components/exportChangeType";
+import { uploadImage } from "./components/uploadImage";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -91,6 +92,22 @@ Bun.serve({
                     "Content-Type": "text/html"
                 }
             })
+        },
+        "/logger/saveimage": async (req) => {
+            const method = req.method;
+            if (method == "POST") {
+                return new Response(await uploadImage(), {
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+            } else {
+                return new Response(errorpage, {
+                    headers: {
+                        "Content-Type": "application/json" 
+                    }
+                })
+            }
         },
         "/logger/view/:ipport": async (req) => {
             const ipport = req.params.ipport;

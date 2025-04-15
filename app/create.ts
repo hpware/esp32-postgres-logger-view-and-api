@@ -20,4 +20,17 @@ CREATE TABLE IF NOT EXISTS logger (
 );
 `;
 
+const create2 = await sql`
+CREATE TABLE IF NOT EXISTS detect (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    item text not null,
+    imageURL text not null
+    detected_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+)
+`
+
+const create3 = await sql`
+`
+
 console.log("Database schema created successfully");
