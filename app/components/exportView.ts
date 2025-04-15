@@ -139,9 +139,21 @@ export async function exportNewView() {
                     <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
                 </section>
                 <section>
-                    <h3>偵測到的鳥</h3>
+                    <h3>偵測到的物種</h3>
                     <ul id="detected_list">
                     <!--${String(getList)}-->
+                    ${detectedItems.length > 0
+                      ? detectedItems.map((item) => `
+                    <li>
+                      <div>
+                        <span>五色鳥</span>
+                        <br/>
+                        偵測時間: ${data?.created_at}
+                        <br/>
+                        <!--${item}-->
+                      </div>
+                    </li>`).join("") : "<li>沒有偵測到</li>"
+                    }
                         <!--${
                           detectedItems.length > 0
                             ? detectedItems
