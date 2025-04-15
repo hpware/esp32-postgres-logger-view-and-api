@@ -1,15 +1,4 @@
-# logger
+# ESP32 Postgres logger View & API
+This is a project that is connected to school. This application requires a postgres database that can be created via bun createdb
 
-To install dependencies:
-
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.2.5. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Website URL: https://yuanhau.com/pages/esp32-postgres-logger-view-and-api 

@@ -31,6 +31,9 @@ CREATE TABLE IF NOT EXISTS detect (
 `
 
 const create3 = await sql`
+create table if not exists jistatus (
+
+)
 `
 
 console.log("Database schema created successfully");

@@ -10,7 +10,7 @@ import { jsonData } from "./components/jsonData";
 import exportNewVideoView from "./components/exportVideoView";
 import { exportNewView } from "./components/exportView";
 import { exportChangeType } from "./components/exportChangeType";
-import { uploadImage } from "./components/uploadImage";
+import uploadImage from "./components/uploadImage";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -32,7 +32,7 @@ Bun.serve({
     fetch(req, server) {
         const url = new URL(req.url);
         if (url.pathname === "/logger/" && server.upgrade(req)) {
-            return; // Upgraded to WebSocket
+            return;
         }
         // Continue with regular HTTP handling
         return server.fetch(req);
@@ -70,7 +70,12 @@ Bun.serve({
         }
     },
     routes: {
-        "/logger/": index,
+        "/logger/": new Response(null, {
+            status: 302,
+            headers: {
+                "Location": "/logger/view"
+            }
+        }),
         "/logger/view": async (req) => {
             return new Response(await exportNewView(), {
                 headers: {
