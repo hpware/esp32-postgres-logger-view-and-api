@@ -1,5 +1,19 @@
 import { sql } from "bun"; 
 
+function formatTime(utc: String) {
+    const date = new Date(utc);
+    return date.toLocaleString('zh-TW', { 
+        timeZone: 'Asia/Taipei',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+}
+
 
 const css = `
 *, *::before, *::after {
@@ -112,7 +126,7 @@ export async function exportNewView() {
             <meta http-equiv="refresh" content="30, '#'"/>
         </head>
          <style>${css}</style>
-        <script>console.log("ID: ${data?.id}");console.log("Date: ${data?.created_at}")</script>
+        <script>console.log("ID: ${data?.id}");console.log("Date: ${formatTime(String(data?.created_at))}")</script>
         <body>
             <h1>顯示資料</h1>
             <section>
@@ -148,7 +162,7 @@ export async function exportNewView() {
                       <div>
                         <span>五色鳥</span>
                         <br/>
-                        偵測時間: ${data?.created_at}
+                        偵測時間: ${formatTime(String(data?.created_at))}
                         <br/>
                         <!--${item}-->
                       </div>

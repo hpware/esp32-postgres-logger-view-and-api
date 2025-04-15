@@ -155,9 +155,10 @@ Bun.serve({
                         data.local_gps_long,
                         data.local_time,
                         data.local_jistatus,
-                        data.local_detect
+                        data.local_detect,
+                        data.local_detect_2? data.local_detect_2: null
                     );
-                    
+                                 
                     // Broadcast the new data to all connected clients
                         try {
                             const updatedData = await jsonData();

@@ -1,4 +1,4 @@
-import { sql } from "bun";
+import { randomUUIDv7, sql } from "bun";
 
 export async function saveInfo(
     cwa_type: string,
@@ -13,7 +13,8 @@ export async function saveInfo(
     local_gps_long: string,  
     local_time: string,
     local_jistatus: boolean,
-    local_detect: Array<any>  
+    local_detect: Array<any>,
+    local_detect_2: string
 ): Promise<boolean> {
     try {
         const save = await sql`
@@ -33,7 +34,7 @@ export async function saveInfo(
             local_jistatus,
             local_detect
         ) VALUES (
-            CURRENT_TIMESTAMP,  /* Changed from datetime('now') to CURRENT_TIMESTAMP */
+            CURRENT_TIMESTAMP,
             ${cwa_type},
             ${cwa_location},
             ${cwa_temp},
@@ -48,11 +49,35 @@ export async function saveInfo(
             ${local_jistatus ? true : false},
             ${JSON.stringify(local_detect)}
         )`
+
         console.log(save);
         console.log("ok?");
-        return true;
     } catch (error) {
         console.error("Error saving data:", error);
         return false;
+    }
+    if (local_detect_2) {
+        const uuid = randomUUIDv7();
+        try {
+        const save2 = await sql`
+        insert into detect (
+            item
+            created_at
+            detected_at
+            imageURL
+        )
+        VALUES (
+            ${local_detect_2},
+            CURRENT_TIMESTAMP,
+            CURRENT_TIMESTAMP,
+            "https://hpg7-img.sch2.top/040zk/${uuid}"
+        )
+        `
+        console.log(save2);
+        return true;
+    }  catch (e) {
+        console.log(e);
+        return false
+    }
     }
 }
