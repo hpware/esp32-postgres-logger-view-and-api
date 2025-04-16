@@ -16,7 +16,7 @@ export async function saveInfo(
     local_detect: Array<any>,
 ): Promise<boolean> {
     try {
-        const save = await sql`
+        sql`
         INSERT INTO logger (
             created_at,  /* Changed from timestamp to created_at */
             cwa_type,
@@ -49,7 +49,6 @@ export async function saveInfo(
             ${JSON.stringify(local_detect)}
         )`
 
-        console.log(save);
         console.log("ok?");
 
         const latestData = await sql`

@@ -80,23 +80,6 @@ li {
   border-radius: 6px;
   background: #f1f5f9;
 }
-  <style>
-        .fp-Video {
-            border: 1px double black;
-            width: 322px;
-            height: 242px;
-        }
-        .display {
-            width: 100%;
-            height: 100%;
-            display: inline-block;
-        }
-        .display > video,
-        object {
-            width: 100%;
-            height: 100%;
-        }
-</style>
 `
 
 export default async function exportNewVideoView(ipport: string) {
