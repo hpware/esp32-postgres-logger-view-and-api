@@ -1,4 +1,5 @@
 import { sql } from "bun"; 
+import { fcja } from "./savs";
 
 function formatTime(utc: String) {
     const date = new Date(utc);
@@ -246,13 +247,13 @@ export async function exportNewView2(ipport: string) {
                     <h3>偵測到的物種</h3>
                     <ul id="detected_list">
                     <!--${String(getList)}-->
-                    ${getList.length > 0
-                      ? getList.map((item) => `
+                    ${fcja().length > 0
+                      ? fcja().map((item) => `
                     <li>
                       <!--<a href="${item.imageURL}">--><div>
                         <span>${item.item}</span>
                         <br/>
-                        偵測時間: ${formatTime(String(item?.created_at))}
+                        偵測時間: ${formatTime(String(item?.time))}
                         <br/>
                         <!--${item}-->
                       </div><!--</a>-->

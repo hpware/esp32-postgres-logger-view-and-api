@@ -138,9 +138,15 @@ Bun.serve({
                 return Response.json({ error: "Failed to get data" }, { status: 500 });
             }
         },
-        /*"logger/hub8735datats": async () => {
-            
-        },*/
+        "logger/hub8735datats": async () => {
+            try {
+                const data = await jsonData();
+                return Response.json(data);
+            } catch (e) {
+                console.error("Error getting JSON data:", e);
+                return Response.json({ error: "Failed to get data" }, { status: 500 })
+            }
+        },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
                 try {
