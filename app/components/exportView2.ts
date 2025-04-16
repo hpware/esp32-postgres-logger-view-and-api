@@ -1,5 +1,6 @@
 import { sql } from "bun"; 
 import { fcja } from "./savs";
+import { gfa } from "./exportChangeType2";
 
 function formatTime(utc: String) {
     const date = new Date(utc);
@@ -234,8 +235,13 @@ export async function exportNewView2(ipport: string) {
                     <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
                     <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
                     <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
+                    <p>紅外線: <span id="light">${gfa() ? "關" : "開"}</span></p>
                     <p>蠕動馬達 ${
                       data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                    }
+                    </p>
+                    <p>紅外線 ${
+                      gfa() ? "<button onclick='fetchGFA()'>關</button>" : "<button onclick='fetchGFA()'>開</button>"
                     }
                  </section>
                 <section>
@@ -269,7 +275,7 @@ export async function exportNewView2(ipport: string) {
                     </ul>
             </section>
         </body>
-          <script>
+          <!--<script>
                 console.log("DOM fully loaded and parsed.");
                   const cwaType = document.getElementById("type");
                   const cwaTemp = document.getElementById("temp");
@@ -294,10 +300,19 @@ export async function exportNewView2(ipport: string) {
                 console.log(gpsLat);
                 console.log(gpsLong);
                 console.log(detectedList);
-          </script>
+          </script>-->
           <script>
                   async function fetchRemote() {
                         const req = await fetch("/logger/jistatus");
+                        const res = await req.text();
+                        alert("已發送到伺服器");
+                        console.log(res);
+                        return res;
+                  }
+          </script>
+          <script>
+                  async function fetchGFA() {
+                        const req = await fetch("/logger/ledstatus");
                         const res = await req.text();
                         alert("已發送到伺服器");
                         console.log(res);
