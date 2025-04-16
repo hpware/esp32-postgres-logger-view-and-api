@@ -1,4 +1,5 @@
 import { randomUUIDv7, sql } from "bun";
+import { getJiStatus } from "./exportChangeType";
 
 export async function saveInfo(
     cwa_type: string,
@@ -51,12 +52,13 @@ export async function saveInfo(
 
         console.log("ok?");
 
-        const latestData = await sql`
+        /*const latestData = await sql`
         SELECT * FROM jistatus 
         ORDER BY id DESC 
         LIMIT 1
-        `;    
-        return latestData[0]?.status
+        `; 
+        return latestData[0]?.status*/
+        return getJiStatus();
     } catch (error) {
         console.error("Error saving data:", error);
         return false;
