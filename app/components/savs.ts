@@ -2,7 +2,7 @@ import { randomUUIDv7, sql } from "bun";
 
 let fcjaa = [];
 
-export async function saveInfo(
+export async function fcjaauwi(
     detect: string,
 ): Promise<boolean> {
     try {

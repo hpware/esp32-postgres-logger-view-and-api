@@ -12,6 +12,7 @@ import { exportNewView } from "./components/exportView";
 import { exportChangeType } from "./components/exportChangeType";
 import uploadImage from "./components/uploadImage";
 import { exportNewView2 } from "./components/exportView2";
+import { fcjaauwi } from "./components/savs";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -138,9 +139,10 @@ Bun.serve({
                 return Response.json({ error: "Failed to get data" }, { status: 500 });
             }
         },
-        "logger/hub8735datats": async () => {
+        "logger/hub8735datats/:deteec": async (req) => {
+            const detected = req.params.deteec;
             try {
-                const data = await jsonData();
+                const data = await fcjaauwi(detected);
                 return Response.json(data);
             } catch (e) {
                 console.error("Error getting JSON data:", e);
