@@ -13,6 +13,7 @@ import { exportChangeType } from "./components/exportChangeType";
 import uploadImage from "./components/uploadImage";
 import { exportNewView2 } from "./components/exportView2";
 import { fcjaauwi } from "./components/savs";
+import { exportChangeType2, gfa } from "./components/exportChangeType2";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -139,7 +140,7 @@ Bun.serve({
                 return Response.json({ error: "Failed to get data" }, { status: 500 });
             }
         },
-        "logger/hub8735datats/:deteec": async (req) => {
+        "/logger/hub8735datats/:deteec": async (req) => {
             const detected = req.params.deteec;
             try {
                 const data = await fcjaauwi(detected);
@@ -148,6 +149,13 @@ Bun.serve({
                 console.error("Error getting JSON data:", e);
                 return Response.json({ error: "Failed to get data" }, { status: 500 })
             }
+        },
+        "/logger/ledstatus": async (req) => {
+            return new Response(await exportChangeType2(), {
+                headers: {
+                    "Content-Type": "text/html"
+                }
+            })
         },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
@@ -180,7 +188,7 @@ Bun.serve({
                         } catch (error) {
                             console.error("Error broadcasting update:", error);
                         }*/
-                    return Response.json({ success: true, jistatus: save });
+                    return Response.json({ success: true, jistatus: save, ledstatus: gfa() });
                 } catch (error) {
                     console.error("Error in /logger/store:", error);
                     return Response.json({ 
