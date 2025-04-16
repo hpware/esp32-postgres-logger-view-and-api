@@ -208,6 +208,7 @@ export async function exportNewView() {
                   async function fetchRemote() {
                         const req = await fetch("/logger/jistatus");
                         const res = await req.text();
+                        alert("已發送到伺服器");
                         console.log(res);
                         return res;
                   }

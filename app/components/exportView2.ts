@@ -137,6 +137,83 @@ export async function exportNewView2(ipport: string) {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta http-equiv="refresh" content="30, '#'"/>
         </head>
+        <!--         <style>${css}</style>
+        <script>console.log("ID: ${data?.id}");console.log("Date: ${formatTime(String(data?.created_at))}")</script>
+        <body>
+            <h1>顯示資料</h1>
+            <section>
+                    <h3>氣象局</h3>
+                    <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>
+                    <p>天氣狀態: <span id="type">${data?.cwa_type || "N/A"}</span></p>
+                    <p>氣溫: <span id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
+                    <p>濕度: <span id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
+                    <p>最高氣溫 <span id="daily_high">${data?.cwa_daily_high ?? "N/A"}°C</span></p>
+                    <p>最低氣溫 <span id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span></p>
+                </section>
+                <section>
+                    <h3>本地</h3>
+                    <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
+                    <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
+                    <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
+                    <p>蠕動馬達 ${
+                      data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                    }
+                 </section>
+                <section>
+                    <h3>GPS 定位</h3>
+                    <p>經度: <span id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
+                    <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
+                </section>
+                <section>
+                    <h3>偵測到的物種</h3>
+                    <ul id="detected_list">
+                    <!--{String(getList)}
+                      ? getList.map(item)
+                    <li>
+                        <br/>
+                        偵測時間: $formatTime(String(item?.created_at))}
+                        <br/>
+                        <!--item}
+                      </div><!--</a>
+                    </ul>
+            </section>
+        </body>
+          <script>
+                console.log("DOM fully loaded and parsed.");
+                  const cwaType = document.getElementById("type");
+                  const cwaTemp = document.getElementById("temp");
+                  const cwaHum =  document.getElementById("hum");
+                  const cwaDailyHigh = document.getElementById("daily_high");
+                  const cwaDailyLow = document.getElementById("daily_low");
+                  const localTemp = document.getElementById("local_temp");
+                  const localHum = document.getElementById("local_hum");
+                  const motorStatus = document.getElementById("motor_status");
+                  const gpsLat = document.getElementById("gps_lat");
+                  const gpsLong = document.getElementById("gps_long");
+                  const detectedList = document.getElementById("detected_list")
+                };
+                console.log(cwaType);
+                console.log(cwaTemp);
+                console.log(cwaHum);
+                console.log(cwaDailyHigh);
+                console.log(cwaDailyLow);
+                console.log(localTemp);
+                console.log(localHum);
+                console.log(motorStatus);
+                console.log(gpsLat);
+                console.log(gpsLong);
+                console.log(detectedList);
+          </script>
+          <script>
+                  async function fetchRemote() {
+                        const req = await fetch("/logger/jistatus");
+                        const res = await req.text();
+                        alert("已發送到伺服器");
+                        console.log(res);
+                        return res;
+                  }
+          </script>
+    </html>-->
          <style>${css}</style>
         <script>console.log("ID: ${data?.id}");console.log("Date: ${formatTime(String(data?.created_at))}")</script>
         <body>
@@ -221,6 +298,7 @@ export async function exportNewView2(ipport: string) {
                   async function fetchRemote() {
                         const req = await fetch("/logger/jistatus");
                         const res = await req.text();
+                        alert("已發送到伺服器");
                         console.log(res);
                         return res;
                   }
