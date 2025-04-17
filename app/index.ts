@@ -14,6 +14,7 @@ import uploadImage from "./components/uploadImage";
 import { exportNewView2 } from "./components/exportView2";
 import { fcjaauwi } from "./components/savs";
 import { exportChangeType2, gfa } from "./components/exportChangeType2";
+import { fakeInfoInsert } from "./components/fakeinfo";
 
 const webSocketJs = readFileSync(join(process.cwd(), "public", "websocket.js"), "utf8");
 
@@ -155,6 +156,10 @@ Bun.serve({
                 headers: {
                     "Content-Type": "text/html"
                 }
+            })
+        },
+        "/logger/ee": async (req) => {
+            return new Response(await fakeInfoInsert(), {
             })
         },
         "/logger/store": async (req) => {
