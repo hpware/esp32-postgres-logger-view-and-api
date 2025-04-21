@@ -164,8 +164,11 @@ Bun.serve({
         },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
+                    const debugclone = req.clone();
+                    console.log(await debugclone.text());
                 try {
-                    const data = await req.json();
+                    const clone = req.clone();
+                    const data = await clone.json();
                     const save = await saveInfo(
                         data.cwa_type,
                         data.cwa_location,
