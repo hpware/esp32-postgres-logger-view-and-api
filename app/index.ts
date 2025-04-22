@@ -164,9 +164,9 @@ Bun.serve({
         },
         "/logger/store": async (req) => {
             if (req.method === "POST") {
-                    const debugclone = req.clone();
-                    console.log(await debugclone.text());
-                try {
+                    console.log(req);
+                    return Response.json({ success: true, jistatus: false, ledstatus: gfa()});
+                /*try {
                     const clone = req.clone();
                     const data = await clone.json();
                     const save = await saveInfo(
@@ -185,7 +185,7 @@ Bun.serve({
                         data.local_detect,
                     );
 
-                    /*// Broadcast the new data to all connected clients
+                    /// Broadcast the new data to all connected clients
                         try {
                             const updatedData = await jsonData();
                             broadcast({
@@ -195,7 +195,7 @@ Bun.serve({
                             console.log("Broadcast sent after new data saved");
                         } catch (error) {
                             console.error("Error broadcasting update:", error);
-                        }*/
+                        }*
                     return Response.json({ success: true, jistatus: save, ledstatus: gfa() });
                 } catch (error) {
                     console.error("Error in /logger/store:", error);
@@ -203,7 +203,7 @@ Bun.serve({
                         error: "Invalid JSON format",
                         details: error.message,
                     }, { status: 400 });
-                }
+                }*/
             }
             return Response.json({ error: "Method not allowed" }, { status: 405 });
         },
