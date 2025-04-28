@@ -256,13 +256,13 @@ export async function exportNewView2(ipport: string) {
                     ${fcja().length > 0
                       ? fcja().map((item) => `
                     <li>
-                      <!--<a href="${item.imageURL}">--><div>
+                      <a href="${item.imageURL}"><div>
                         <span>${item.item}</span>
-                        <br/>
+                        <br/> 
                         偵測時間: ${formatTime(String(item?.time))}
                         <br/>
                         <!--${item}-->
-                      </div><!--</a>-->
+                      </div></a>
                     </li>`).join("") : "<li>尚未偵測到物種</li>"
                     }
                         <!--${

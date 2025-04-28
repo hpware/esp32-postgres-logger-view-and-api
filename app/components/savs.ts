@@ -9,6 +9,7 @@ export async function fcjaauwi(
         fcjaa.push({
             time: new Date().toUTCString(),
             item: detect,
+            imageURL: `https://s3.yhw.tw/logger-detect-30/${detect}.jpg`,
         })
     } catch (error) {
         console.error("Error saving data:", error);
