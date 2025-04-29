@@ -7,10 +7,12 @@ export async function fcjaauwi(
     detect: string,
 ): Promise<boolean> {
     try {
-        const d7 = Date().toUTCString();
+        const d7 = new Date().toUTCString();
+        const uuid = randomUUIDv7();
+        const imgurl = `https://s3.yhw.tw/logger-detect-30/object-${uuid}.jpg`;
         const updateData = await sql`
         INSERT INTO detect (created_at, detected_at, item, imageurl)
-        values (${d7}, ${d7}, ${detect}, "https://s3.yhw.tw/logger-detect-30/${detect}.jpg")
+        values (${d7}, ${d7}, ${detect}, ${imgurl} );
         `;
 
     } catch (e) {
@@ -23,6 +25,7 @@ export async function fcja() {
     SELECT * FROM detect 
     ORDER BY detected_at DESC
     `;
+    console.log(updateData);
     return updateData;
 }   
 /**

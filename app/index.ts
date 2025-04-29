@@ -38,8 +38,9 @@ Bun.serve({
         if (url.pathname === "/logger/" && server.upgrade(req)) {
             return;
         }
-        // Continue with regular HTTP handling
-        return server.fetch(req);
+        return new Response("Upgrade failed", { status: 500 });
+
+        //return server.fetch(req);
     },
     websocket: {
         open(ws) {
