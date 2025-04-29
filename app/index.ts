@@ -9,7 +9,7 @@ import { join, matchesGlob } from "path";
 import { jsonData } from "./components/jsonData";
 import exportNewVideoView from "./components/exportVideoView";
 import { exportNewView } from "./components/exportView";
-import { exportChangeType } from "./components/exportChangeType";
+import { exportChangeType, getJiStatus } from "./components/exportChangeType";
 import uploadImage from "./components/uploadImage";
 import { exportNewView2 } from "./components/exportView2";
 import { fcjaauwi } from "./components/savs";
@@ -165,8 +165,7 @@ Bun.serve({
         "/logger/store": async (req) => {
             if (req.method === "POST") {
                     console.log(req);
-                    return Response.json({ success: true, jistatus: false, ledstatus: gfa()});
-                /*try {
+                try {
                     const clone = req.clone();
                     const data = await clone.json();
                     const save = await saveInfo(
@@ -195,15 +194,18 @@ Bun.serve({
                             console.log("Broadcast sent after new data saved");
                         } catch (error) {
                             console.error("Error broadcasting update:", error);
-                        }*
+                        }
                     return Response.json({ success: true, jistatus: save, ledstatus: gfa() });
                 } catch (error) {
                     console.error("Error in /logger/store:", error);
                     return Response.json({ 
                         error: "Invalid JSON format",
                         details: error.message,
+                        success: true,
+                        jistatus: getJiStatus(),
+                        ledstatus: gfa()
                     }, { status: 400 });
-                }*/
+                }
             }
             return Response.json({ error: "Method not allowed" }, { status: 405 });
         },

@@ -96,6 +96,9 @@ li {
   margin: 0.25rem 0;
   border-radius: 6px;
   background: #f1f5f9;
+  a {
+    text-decoration: none;
+  }
 }
 button {
   background-color: var(--primary);
