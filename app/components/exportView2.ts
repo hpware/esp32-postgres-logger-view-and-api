@@ -1,21 +1,20 @@
-import { sql } from "bun"; 
+import { sql } from "bun";
 import { fcja } from "./savs";
 import { gfa } from "./exportChangeType2";
 
 function formatTime(utc: String) {
-    const date = new Date(utc);
-    return date.toLocaleString('zh-TW', { 
-        timeZone: 'Asia/Taipei',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    });
+  const date = new Date(utc);
+  return date.toLocaleString("zh-TW", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
 }
-
 
 const css = `
 *, *::before, *::after {
@@ -112,26 +111,25 @@ button:hover {
   color: white;
   background-color:rgb(31, 80, 185);
 }
-`
+`;
 
 export async function exportNewView2(ipport: string) {
-
-    const latestData = await sql`
+  const latestData = await sql`
     SELECT * FROM logger 
     ORDER BY id DESC 
     LIMIT 1
 `;
 
-    const getList = await sql`
+  const getList = await sql`
       SELECT * from detect
       order by id DESC
-    `
+    `;
 
-    const data = latestData[0]
-    const detectedItems = JSON.parse(data?.local_detect || '[]');
-    
-    console.log(data);
-    return `
+  const data = latestData[0];
+  const detectedItems = JSON.parse(data?.local_detect || "[]");
+
+  console.log(data);
+  return `
     <!DOCTYPE html>
     <html>
         <head>
@@ -161,7 +159,9 @@ export async function exportNewView2(ipport: string) {
                     <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
                     <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
                     <p>蠕動馬達 ${
-                      data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                      data?.local_jistatus
+                        ? "<button onclick='fetchRemote()'>關</button>"
+                        : "<button onclick='fetchRemote()'>開</button>"
                     }
                  </section>
                 <section>
@@ -240,11 +240,15 @@ export async function exportNewView2(ipport: string) {
                     <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
                     <p>紅外線: <span id="light">${gfa() ? "關" : "開"}</span></p>
                     <p>蠕動馬達 ${
-                      data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                      data?.local_jistatus
+                        ? "<button onclick='fetchRemote()'>關</button>"
+                        : "<button onclick='fetchRemote()'>開</button>"
                     }
                     </p>
                     <p>紅外線 ${
-                      gfa() ? "<button onclick='fetchGFA()'>關</button>" : "<button onclick='fetchGFA()'>開</button>"
+                      gfa()
+                        ? "<button onclick='fetchGFA()'>關</button>"
+                        : "<button onclick='fetchGFA()'>開</button>"
                     }
                  </section>
                 <section>
@@ -256,8 +260,11 @@ export async function exportNewView2(ipport: string) {
                     <h3>偵測到的物種</h3>
                     <ul id="detected_list">
                     <!--${String(getList)}-->
-                    ${fcja().length > 0
-                      ? fcja().map((item) => `
+                    ${
+                      fcja().length > 0
+                        ? fcja()
+                            .map(
+                              (item) => `
                     <li>
                       <a href="${item.imageURL}"><div>
                         <span>${item.item}</span>
@@ -266,7 +273,10 @@ export async function exportNewView2(ipport: string) {
                         <br/>
                         <!--${item}-->
                       </div></a>
-                    </li>`).join("") : "<li>尚未偵測到物種</li>"
+                    </li>`,
+                            )
+                            .join("")
+                        : "<li>尚未偵測到物種</li>"
                     }
                         <!--${
                           detectedItems.length > 0
@@ -323,5 +333,5 @@ export async function exportNewView2(ipport: string) {
                   }
           </script>
     </html>
-    `
+    `;
 }

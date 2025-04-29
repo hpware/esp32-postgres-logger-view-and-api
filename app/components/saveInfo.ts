@@ -2,22 +2,22 @@ import { randomUUIDv7, sql } from "bun";
 import { getJiStatus } from "./exportChangeType";
 
 export async function saveInfo(
-    cwa_type: string,
-    cwa_location: string,
-    cwa_temp: number,
-    cwa_hum: number,
-    cwa_daliyHigh: number,
-    cwa_daliyLow: number,
-    local_temp: number,
-    local_hum: number,
-    local_gps_lat: string,
-    local_gps_long: string,  
-    local_time: string,
-    local_jistatus: boolean,
-    local_detect: Array<any>,
+  cwa_type: string,
+  cwa_location: string,
+  cwa_temp: number,
+  cwa_hum: number,
+  cwa_daliyHigh: number,
+  cwa_daliyLow: number,
+  local_temp: number,
+  local_hum: number,
+  local_gps_lat: string,
+  local_gps_long: string,
+  local_time: string,
+  local_jistatus: boolean,
+  local_detect: Array<any>,
 ): Promise<boolean> {
-    try {
-        const save = await sql`
+  try {
+    const save = await sql`
         INSERT INTO logger (
             created_at,  /* Changed from timestamp to created_at */
             cwa_type,
@@ -48,20 +48,20 @@ export async function saveInfo(
             ${local_time},
             ${local_jistatus ? true : false},
             ${JSON.stringify(local_detect)}
-        )`
+        )`;
 
-        console.log(save);
-        console.log("ok?");
+    console.log(save);
+    console.log("ok?");
 
-        /*const latestData = await sql`
+    /*const latestData = await sql`
         SELECT * FROM jistatus 
         ORDER BY id DESC 
         LIMIT 1
         `; 
         return latestData[0]?.status*/
-        return getJiStatus();
-    } catch (error) {
-        console.error("Error saving data:", error);
-        return false;
-    }
+    return getJiStatus();
+  } catch (error) {
+    console.error("Error saving data:", error);
+    return false;
+  }
 }

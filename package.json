@@ -5,12 +5,16 @@
   "private": true,
   "scripts": {
     "start": "bun run app/index.ts",
-    "createdb": "bun run app/create.ts"
+    "createdb": "bun run app/create.ts",
+    "clean": "prettier . --write"
   },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "prettier": "^3.5.3"
   }
 }

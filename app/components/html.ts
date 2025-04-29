@@ -1,5 +1,5 @@
 export default function s() {
-    return `
+  return `
     <!DOCTYPE html>
     <html>
         <head>
@@ -182,5 +182,5 @@ li {
             </script>
         </body>
     </html>
-`
+`;
 }

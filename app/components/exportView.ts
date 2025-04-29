@@ -1,19 +1,18 @@
-import { sql } from "bun"; 
+import { sql } from "bun";
 
 function formatTime(utc: String) {
-    const date = new Date(utc);
-    return date.toLocaleString('zh-TW', { 
-        timeZone: 'Asia/Taipei',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    });
+  const date = new Date(utc);
+  return date.toLocaleString("zh-TW", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+  });
 }
-
 
 const css = `
 *, *::before, *::after {
@@ -95,26 +94,25 @@ li {
   border-radius: 6px;
   background: #f1f5f9;
 }
-`
+`;
 
 export async function exportNewView() {
-
-    const latestData = await sql`
+  const latestData = await sql`
     SELECT * FROM logger 
     ORDER BY id DESC 
     LIMIT 1
 `;
 
-    const getList = await sql`
+  const getList = await sql`
       SELECT * from detect
       order by id DESC
-    `
+    `;
 
-    const data = latestData[0]
-    const detectedItems = JSON.parse(data?.local_detect || '[]');
-    
-    console.log(data);
-    return `
+  const data = latestData[0];
+  const detectedItems = JSON.parse(data?.local_detect || "[]");
+
+  console.log(data);
+  return `
     <!DOCTYPE html>
     <html>
         <head>
@@ -144,7 +142,9 @@ export async function exportNewView() {
                     <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
                     <p>蠕動馬達: <span id="motor_status">${data?.local_jistatus ? "運轉中" : "停止"}</span></p>
                     <p>蠕動馬達 ${
-                      data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : "<button onclick='fetchRemote()'>開</button>"
+                      data?.local_jistatus
+                        ? "<button onclick='fetchRemote()'>關</button>"
+                        : "<button onclick='fetchRemote()'>開</button>"
                     }
                  </section>
                 <section>
@@ -156,8 +156,11 @@ export async function exportNewView() {
                     <h3>偵測到的物種</h3>
                     <ul id="detected_list">
                     <!--${String(getList)}-->
-                    ${getList.length > 0
-                      ? getList.map((item) => `
+                    ${
+                      getList.length > 0
+                        ? getList
+                            .map(
+                              (item) => `
                     <li>
                       <!--<a href="${item.imageURL}">--><div>
                         <span>${item.item}</span>
@@ -166,7 +169,10 @@ export async function exportNewView() {
                         <br/>
                         <!--${item}-->
                       </div><!--</a>-->
-                    </li>`).join("") : "<li>尚未偵測到物種</li>"
+                    </li>`,
+                            )
+                            .join("")
+                        : "<li>尚未偵測到物種</li>"
                     }
                         <!--${
                           detectedItems.length > 0
@@ -214,5 +220,5 @@ export async function exportNewView() {
                   }
           </script>
     </html>
-    `
+    `;
 }

@@ -1,5 +1,4 @@
-import { sql } from "bun"; 
-
+import { sql } from "bun";
 
 const css = `
 *, *::before, *::after {
@@ -80,19 +79,18 @@ li {
   border-radius: 6px;
   background: #f1f5f9;
 }
-`
+`;
 
 export default async function exportNewVideoView(ipport: string) {
-
-    const latestData = await sql`
+  const latestData = await sql`
     SELECT * FROM logger 
     ORDER BY id DESC 
     LIMIT 1
 `;
 
-    const data = latestData[0]
-    const detectedItems = JSON.parse(data?.local_detect || '[]');
-    return `
+  const data = latestData[0];
+  const detectedItems = JSON.parse(data?.local_detect || "[]");
+  return `
     <!DOCTYPE html>
     <html>
         <head>
@@ -115,5 +113,5 @@ export default async function exportNewVideoView(ipport: string) {
         onload="resizeIframe(this)" />
         </body>
     </html>
-    `
+    `;
 }
