@@ -23,27 +23,23 @@ const webSocketJs = readFileSync(
 
 let clients = new Set<ServerWebSocket<unknown>>();
 
-const routes = {
-  "/logger/": new Response(null, {
-    status: 302,
-    headers: {
-      Location: "/logger/view",
-    },
-  }),
-  "/logger/view": async (req: Request) => {
-    return new Response(await exportNewView(), {
+type RouteHandler = (req: Request) => Promise<Response> | Response;
+
+const routes: Record<string, RouteHandler> = {
+  "/logger/": () =>
+    new Response(null, {
+      status: 302,
       headers: {
-        "Content-Type": "text/html",
+        Location: "/logger/view",
       },
-    });
-  },
-  "/logger/viewws": async (req: Request) => {
-    return new Response(await html2(), {
+    }),
+  "/logger/view": () =>
+    new Response(null, {
+      status: 302,
       headers: {
-        "Content-Type": "text/html",
+        Location: "/logger/view/192.168.1.3",
       },
-    });
-  },
+    }),
   "/logger/jistatus": async () => {
     return new Response(await exportChangeType(), {
       headers: {
@@ -68,6 +64,7 @@ const routes = {
     }
   },
   "/logger/view/:ipport": async (req: Request) => {
+    console.log(req);
     const ipport = req.params.ipport;
     return new Response(await exportNewView2(ipport), {
       headers: {
@@ -182,11 +179,22 @@ Bun.serve({
     if (success) {
       return;
     }
-
     const url = new URL(req.url);
-    const handler = routes[url.pathname];
+    const path = url.pathname.replace(/\/$/, "");
+    const handler = routes[path];
 
-    return handler ? handler(req) : new Response("Not found", { status: 404 });
+    if (typeof handler === "function") {
+      try {
+        return handler(req);
+      } catch (error) {
+        console.error("Route handler error:", error);
+        return Response.json(
+          { error: "Internal server error" },
+          { status: 500 },
+        );
+      }
+    }
+    return new Response("Not found", { status: 404 });
   },
   websocket: {
     open(ws) {
@@ -217,6 +225,14 @@ Bun.serve({
       } catch (error) {
         console.error("Error parsing WebSocket message:", error);
       }
+    },
+  },
+  routes: {
+    "/logger/view/:ipport": async (req: Request) => {
+      const ipport = (req as any).params.ipport;
+      return new Response(await exportNewView2(ipport), {
+        headers: { "Content-Type": "text/html" },
+      });
     },
   },
 });

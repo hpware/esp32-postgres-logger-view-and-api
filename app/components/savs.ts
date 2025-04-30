@@ -21,7 +21,6 @@ export async function fcja() {
     SELECT * FROM detect 
     ORDER BY detected_at DESC
     `;
-  console.log(updateData);
   return updateData;
 }
 /**
