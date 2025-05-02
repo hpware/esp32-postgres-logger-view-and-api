@@ -186,7 +186,7 @@ export async function exportNewView2(ipport: string) {
     <section>
       <h3>偵測到的物種</h3>
       <ul id="detected_list">
-        <!--${String(getList[0])}-->
+        <!--${getList}-->
         ${
           fcja().length > 0
             ? fcja()
