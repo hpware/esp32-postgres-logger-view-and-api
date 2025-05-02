@@ -83,17 +83,17 @@
     </section>
   </body>
   <script>
-    const cwaType = document.getElementById("type").innerText;
-    const cwaTemp = document.getElementById("temp").innerText;
-    const cwaHum = document.getElementById("hum").innerText;
-    const cwaDailyHigh = document.getElementById("daily_high").innerText;
-    const cwaDailyLow = document.getElementById("daily_low").innerText;
-    const localTemp = document.getElementById("local_temp").innerText;
-    const localHum = document.getElementById("local_hum").innerText;
-    const motorStatus = document.getElementById("motor_status").innerText;
-    const gpsLat = document.getElementById("gps_lat").innerText;
-    const gpsLong = document.getElementById("gps_long").innerText;
-    const detectedList = document.getElementById("detected_list").innerText;
+    let cwaType = document.getElementById("type").innerText;
+    let cwaTemp = document.getElementById("temp").innerText;
+    let cwaHum = document.getElementById("hum").innerText;
+    let cwaDailyHigh = document.getElementById("daily_high").innerText;
+    let cwaDailyLow = document.getElementById("daily_low").innerText;
+    let localTemp = document.getElementById("local_temp").innerText;
+    let localHum = document.getElementById("local_hum").innerText;
+    let motorStatus = document.getElementById("motor_status").innerText;
+    let gpsLat = document.getElementById("gps_lat").innerText;
+    let gpsLong = document.getElementById("gps_long").innerText;
+    let detectedList = document.getElementById("detected_list").innerText;
     console.log(cwaType);
     console.log(cwaTemp);
     console.log(cwaHum);
@@ -105,8 +105,10 @@
     console.log(gpsLat);
     console.log(gpsLong);
     console.log(detectedList);  
-    const socket = new WebSocket("ws://localhost:3000/logger/");
-    socket.addEventListener("message", (event) => {
+    const socket = new WebSocket("wss://zb-logger.sch2.top/logger/");
+    socket.addEventListener("message", (event1) => {
+      const event = JSON.parse(event1.data)[0]; 
+      console.log(event);
       console.log(event.data);
       console.log(event.id);
       console.log(event.created_at);

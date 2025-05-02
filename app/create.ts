@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS logger (
     local_gps_long VARCHAR(20),
     local_time TIMESTAMPTZ,
     local_jistatus BOOLEAN,
+    local_light BOOLEAN,
     local_detect JSONB
 );
 `;

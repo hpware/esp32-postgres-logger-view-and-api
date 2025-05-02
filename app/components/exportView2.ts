@@ -173,9 +173,9 @@ export async function exportNewView2(ipport: string) {
       </p>
       <p>紅外線: <span id="light">${gfa() ? "關" : "開"}</span></p>
       <p>
-        蠕動馬達 ${data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : '<button onclick="fetchRemote()">開</button>'}</p>
+        蠕動馬達 ${data?.local_jistatus ? "<button onclick='fetchRemote() id='jistatus2'>關</button>" : '<button onclick="fetchRemote()" id="jistatus2">開</button>'}</p>
       <p>
-        紅外線 ${gfa() ? '<button onclick="fetchGFA()">關</button>' : '<button onclick="fetchGFA()">開</button>'}
+        紅外線 ${gfa() ? '<button onclick="fetchGFA()" id="light2">關</button>' : '<button onclick="fetchGFA()" id="light2">開</button>'}
       </p>
     </section>
     <section>
@@ -186,7 +186,7 @@ export async function exportNewView2(ipport: string) {
     <section>
       <h3>偵測到的物種</h3>
       <ul id="detected_list">
-        <!--${String(getList)}-->
+        <!--${String(getList[0])}-->
         ${
           fcja().length > 0
             ? fcja()
@@ -222,9 +222,12 @@ export async function exportNewView2(ipport: string) {
     let localTemp = document.getElementById("local_temp").innerText;
     let localHum = document.getElementById("local_hum").innerText;
     let motorStatus = document.getElementById("motor_status").innerText;
+    let lightStatus = document.getElementById("light").innerText;
     let gpsLat = document.getElementById("gps_lat").innerText;
     let gpsLong = document.getElementById("gps_long").innerText;
     let detectedList = document.getElementById("detected_list").innerText;
+    let lightStatus2 = document.getElementById("light2").innerText;
+    let jistatus2 = document.getElementById("jistatus2").innerText;
     console.log(cwaType);
     console.log(cwaTemp);
     console.log(cwaHum);
@@ -237,7 +240,9 @@ export async function exportNewView2(ipport: string) {
     console.log(gpsLong);
     console.log(detectedList);  
     const socket = new WebSocket("wss://zb-logger.sch2.top/logger/");
-    socket.addEventListener("message", (event) => {
+    socket.addEventListener("message", (event1) => {
+      const event = JSON.parse(event1.data)[0]; // AI added this
+      console.log(event);
       console.log(event.data);
       console.log(event.id);
       console.log(event.created_at);
@@ -248,10 +253,13 @@ export async function exportNewView2(ipport: string) {
       cwaDailyLow = event.cwa_daily_low;
       localTemp = event.local_temp;
       localHum = event.local_hum;
-      motorStatus = event.local_jistatus;
+      motorStatus = event.local_jistatus ? "關" : "運轉中";
       gpsLat = event.local_gps_lat;
       gpsLong = event.local_gps_long;
       detectedList = event.local_detect;
+      lightStatus = event.local_light ? "關" : "開";
+      lightStatus2 = event.local_light ? "關" : "開";
+      jistatus2 = event.local_jistatus ? "關" : "開";
       console.log(cwaType);
       console.log(cwaTemp);
       console.log(cwaHum);
@@ -263,6 +271,7 @@ export async function exportNewView2(ipport: string) {
       console.log(gpsLat);
       console.log(gpsLong);
       console.log(detectedList); 
+      console.log(lightStatus);
     });
     async function fetchRemote() {
       const req = await fetch("/logger/jistatus");

@@ -1,5 +1,6 @@
 import { randomUUIDv7, sql } from "bun";
 import { getJiStatus } from "./exportChangeType";
+import { gfa } from "./exportChangeType2";
 
 export async function saveInfo(
   cwa_type: string,
@@ -32,6 +33,7 @@ export async function saveInfo(
             local_gps_long,
             local_time,
             local_jistatus,
+            local_light,
             local_detect
         ) VALUES (
             CURRENT_TIMESTAMP,
@@ -47,7 +49,8 @@ export async function saveInfo(
             ${local_gps_long},
             ${local_time},
             ${local_jistatus ? true : false},
-            ${JSON.stringify(local_detect)}
+            ${gfa() ? true : false},
+            ${JSON.stringify(local_detect)} 
         )`;
 
     console.log(save);
