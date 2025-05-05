@@ -1,9 +1,17 @@
-import { randomUUIDv7, sql } from "bun";
+import { randomUUIDv7, sql, s3, write, S3Client } from "bun";
 
-let fcjaa = [];
+const s3file = new S3Client({
+  accessKeyId: process.env.MINIO_ACCESS_KEY,
+  secretAccessKey: process.env.MINIO_SECRET_KEY,
+  bucket: "h86735",
+  region: "tw",
+  endpoint: "https://object-storage.sch2.top/",
+});
 
 export async function fcjaauwi(detect: string): Promise<boolean> {
   try {
+    const sefile = s3file.write("helloworld.txt", "Hello World!");
+    console.log(sefile);
     const d7 = new Date().toUTCString();
     const uuid = randomUUIDv7();
     const imgurl = `https://s3.yhw.tw/logger-detect-30/object-${uuid}.jpg`;

@@ -89,15 +89,26 @@ const routes: Record<string, RouteHandler> = {
     }
   },
   "/logger/hub8735datats/:deteec": async (req: Request) => {
-    const detected = req.params.deteec;
-    try {
-      const data = await fcjaauwi(detected);
-      return Response.json(data);
-    } catch (e) {
-      console.error("Error getting JSON data:", e);
-      return Response.json({ error: "Failed to get data" }, { status: 500 });
-    }
-  },
+      const detected = req.params.deteec;
+      const body = req.body;
+      if (req.method === "POST") {
+        // Return response immediately
+        const response = Response.json({ status: "Processing" });
+        
+        // Process data in background
+        fcjaauwi(detected, body)
+          .then(data => {
+            console.log("Data processing completed:", data);
+          })
+          .catch(e => {
+            console.error("Error processing data:", e);
+          });
+  
+        return response;
+      } else {
+        return Response.json({ error: "You are not using a POST request." }, { status: 403 });
+      }
+    },
   "/logger/ledstatus": async (req: Request) => {
     return new Response(await exportChangeType2(), {
       headers: {
@@ -233,6 +244,27 @@ Bun.serve({
       return new Response(await exportNewView2(ipport), {
         headers: { "Content-Type": "text/html" },
       });
+    },
+    "/logger/hub8735datats/:deteec": async (req: Request) => {
+      const detected = req.params.deteec;
+      const body = req.body;
+      if (req.method === "GET") {
+        // Return response immediately
+        const response = Response.json({ status: "Processing" });
+        
+        // Process data in background
+        fcjaauwi(detected, body)
+          .then(data => {
+            console.log("Data processing completed:", data);
+          })
+          .catch(e => {
+            console.error("Error processing data:", e);
+          });
+  
+        return response;
+      } else {
+        return Response.json({ error: "You are not using a POST request." }, { status: 403 });
+      }
     },
   },
 });
