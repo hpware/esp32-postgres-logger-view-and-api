@@ -248,7 +248,7 @@ Bun.serve({
     "/logger/hub8735datats/:deteec": async (req: Request) => {
       const detected = req.params.deteec;
       const body = req.body;
-      if (req.method === "GET") {
+      if (req.method === "POST") {
         // Return response immediately
         const response = Response.json({ status: "Processing" });
         
