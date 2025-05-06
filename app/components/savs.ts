@@ -4,15 +4,11 @@ import s3file from "../s3";
 
 export async function fcjaauwi(detect: string, body: any) {
   try {
-    const uuid = randomUUIDv7();
-    const fileName = `/${detect}-${uuid}.jpg`;
-    const s3filefile = s3file.file(fileName);
-    const presignedUrl = s3filefile.presign({
-      type: body.type, // optional, only if you need to set content type
-      method: "PUT"    // if you want an upload URL
-    });
-    console.log(presignedUrl);
     const d7 = new Date().toUTCString();
+    const uuid = randomUUIDv7();
+    const fileName = `/${uuid}.jpg`;
+    const s3filefile = s3file.file(fileName);
+    await s3filefile.write(body, { type: body.type });
     const imgurl = `https://s3.yhw.tw/logger-detect-30/${fileName}`;
     const updateData = await sql`
         INSERT INTO detect (created_at, detected_at, item, imageurl)

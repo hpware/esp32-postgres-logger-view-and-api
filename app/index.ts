@@ -247,13 +247,13 @@ Bun.serve({
     },
     "/logger/hub8735datats/:deteec": async (req: Request) => {
       const detected = req.params.deteec;
-      const body = req.body;
       if (req.method === "POST") {
         // Return response immediately
         const response = Response.json({ status: "Processing" });
         
         // Process data in background
-        fcjaauwi(detected, body)
+        const arrayBuffer = await req.arrayBuffer();
+        fcjaauwi(detected, arrayBuffer)
           .then(data => {
             console.log("Data processing completed:", data);
           })
