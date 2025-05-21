@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/app/ ./app/
 COPY --from=builder /app/package.json ./
 COPY --from=builder /app/bun.lock* ./
-COPY .env .env
+
 RUN bun install --production
 
 # Environment Variables
