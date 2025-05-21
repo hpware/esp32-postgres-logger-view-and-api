@@ -6,18 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="og:author:email" content="hw@yuanhau.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
   </head>
-  <style>
-    ${css}
-  </style>
   <script>
     console.log("ID: ${data?.id}");
     console.log("Date: ${formatTime(String(data?.created_at))}");
   </script>
-  <body>
-    <h1>顯示資料</h1>
-    <a href="http://${ipport}"><button>即使影像</button></a>
-    <section>
+  <body class="justify-center align-center text-center selection:opactiy-[50%] bg-[url(https://s3.yhw.tw/scharchive/bgimage.jpg)] bg-cover bg-no-repeat bg-center">
+    <h1 class="text-4xl text-white m-4 p-2">顯示資料</h1>
+    <a href="http://${ipport}"><button class="bg-blue-200/70 p-2 rounded-xl hover:bg-blue-300/40 transition-all duration-300">即使影像</button></a>
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>氣象局</h3>
       <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>
       <p>天氣狀態: <span id="type">${data?.cwa_type || "N/A"}</span></p>
@@ -30,7 +29,7 @@
         最低氣溫 <span id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span>
       </p>
     </section>
-    <section>
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>本地</h3>
       <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
       <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
@@ -42,20 +41,20 @@
       </p>
       <p>紅外線: <span id="light">${gfa() ? "關" : "開"}</span></p>
       <p>
-        蠕動馬達 ${data?.local_jistatus ? "<button onclick='fetchRemote()'>關</button>" : '<button onclick="fetchRemote()">開</button>'}</p>
+        蠕動馬達 ${data?.local_jistatus ? "<button onclick='fetchRemote() id='jistatus2'>關</button>" : '<button onclick="fetchRemote()" id="jistatus2">開</button>'}</p>
       <p>
-        紅外線 ${gfa() ? '<button onclick="fetchGFA()">關</button>' : '<button onclick="fetchGFA()">開</button>'}
+        紅外線 ${gfa() ? '<button onclick="fetchGFA()" id="light2">關</button>' : '<button onclick="fetchGFA()" id="light2">開</button>'}
       </p>
     </section>
-    <section>
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>GPS 定位</h3>
       <p>經度: <span id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
       <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
     </section>
-    <section>
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>偵測到的物種</h3>
       <ul id="detected_list">
-        <!--${String(getList)}-->
+        <!--${getList}-->
         ${
           fcja().length > 0
             ? fcja()
@@ -70,7 +69,7 @@
               <br />
               <!--${item}-->
             </div></a
-          >
+          >   
         </li>
         `,
                 )
@@ -91,9 +90,12 @@
     let localTemp = document.getElementById("local_temp").innerText;
     let localHum = document.getElementById("local_hum").innerText;
     let motorStatus = document.getElementById("motor_status").innerText;
+    let lightStatus = document.getElementById("light").innerText;
     let gpsLat = document.getElementById("gps_lat").innerText;
     let gpsLong = document.getElementById("gps_long").innerText;
     let detectedList = document.getElementById("detected_list").innerText;
+    let lightStatus2 = document.getElementById("light2").innerText;
+    let jistatus2 = document.getElementById("jistatus2").innerText;
     console.log(cwaType);
     console.log(cwaTemp);
     console.log(cwaHum);
@@ -107,7 +109,7 @@
     console.log(detectedList);  
     const socket = new WebSocket("wss://zb-logger.sch2.top/logger/");
     socket.addEventListener("message", (event1) => {
-      const event = JSON.parse(event1.data)[0]; 
+      const event = JSON.parse(event1.data)[0]; // AI added this
       console.log(event);
       console.log(event.data);
       console.log(event.id);
@@ -119,10 +121,13 @@
       cwaDailyLow = event.cwa_daily_low;
       localTemp = event.local_temp;
       localHum = event.local_hum;
-      motorStatus = event.local_jistatus;
+      motorStatus = event.local_jistatus ? "關" : "運轉中";
       gpsLat = event.local_gps_lat;
       gpsLong = event.local_gps_long;
       detectedList = event.local_detect;
+      lightStatus = event.local_light ? "關" : "開";
+      lightStatus2 = event.local_light ? "關" : "開";
+      jistatus2 = event.local_jistatus ? "關" : "開";
       console.log(cwaType);
       console.log(cwaTemp);
       console.log(cwaHum);
@@ -134,6 +139,7 @@
       console.log(gpsLat);
       console.log(gpsLong);
       console.log(detectedList); 
+      console.log(lightStatus);
     });
     async function fetchRemote() {
       const req = await fetch("/logger/jistatus");

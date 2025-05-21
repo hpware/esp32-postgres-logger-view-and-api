@@ -1,23 +1,28 @@
 import { sql } from "bun";
 import type { ServerWebSocket } from "bun";
 import index from "./index.html";
-import errorpage from "./errorpage.html";
-import html2 from "./components/html";
 import { saveInfo } from "./components/saveInfo";
 import { readFileSync } from "fs";
 import { join, matchesGlob } from "path";
 import { jsonData } from "./components/jsonData";
-import exportNewVideoView from "./components/exportVideoView";
-import { exportNewView } from "./components/exportView";
 import { exportChangeType, getJiStatus } from "./components/exportChangeType";
 import uploadImage from "./components/uploadImage";
 import { exportNewView2 } from "./components/exportView2";
 import { fcjaauwi } from "./components/savs";
 import { exportChangeType2, gfa } from "./components/exportChangeType2";
-import { fakeInfoInsert } from "./components/fakeinfo";
 
 const webSocketJs = readFileSync(
   join(process.cwd(), "public", "websocket.js"),
+  "utf8",
+);
+
+const errorpage = readFileSync(
+  join(process.cwd(), "app", "errorpage.html"),
+  "utf8",
+);
+
+const bgimage = readFileSync(
+  join(process.cwd(), "public", "bgimage.jpg"),
   "utf8",
 );
 
@@ -62,6 +67,13 @@ const routes: Record<string, RouteHandler> = {
         },
       });
     }
+  },
+  "/logger/bgimage": async () => {
+    return new Response(bgimage, {
+      headers: {
+        "Content-Type": "image/jpeg",
+      },
+    });
   },
   "/logger/view/:ipport": async (req: Request) => {
     console.log(req);
@@ -115,9 +127,6 @@ const routes: Record<string, RouteHandler> = {
         "Content-Type": "text/html",
       },
     });
-  },
-  "/logger/ee": async (req: Request) => {
-    return new Response(await fakeInfoInsert(), {});
   },
   "/logger/store": async (req: Request) => {
     if (req.method === "POST") {
@@ -205,7 +214,7 @@ Bun.serve({
         );
       }
     }
-    return new Response("Not found", { status: 404 });
+    return new Response(errorpage, { status: 404, headers: { "Content-Type": "text/html" } });
   },
   websocket: {
     open(ws) {
