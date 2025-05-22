@@ -21,11 +21,6 @@ const errorpage = readFileSync(
   "utf8",
 );
 
-const bgimage = readFileSync(
-  join(process.cwd(), "public", "bgimage.jpg"),
-  "utf8",
-);
-
 let clients = new Set<ServerWebSocket<unknown>>();
 
 type RouteHandler = (req: Request) => Promise<Response> | Response;
@@ -67,13 +62,6 @@ const routes: Record<string, RouteHandler> = {
         },
       });
     }
-  },
-  "/logger/bgimage": async () => {
-    return new Response(bgimage, {
-      headers: {
-        "Content-Type": "image/jpeg",
-      },
-    });
   },
   "/logger/view/:ipport": async (req: Request) => {
     console.log(req);
