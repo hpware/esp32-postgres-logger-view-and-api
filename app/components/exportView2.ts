@@ -47,7 +47,7 @@ export async function exportNewView2(ipport: string) {
     console.log("ID: ${data?.id}");
     console.log("Date: ${formatTime(String(data?.created_at))}");
   </script>
-  <body class="justify-center align-center text-center selection:opactiy-[50%] bg-[url(https://s3.yhw.tw/scharchive/bgimage.jpg)] bg-cover bg-no-repeat bg-center">
+  <body class="justify-center align-center text-center selection:opactiy-[50%] bg-[url(https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/public/bg.jpg)] bg-cover bg-no-repeat bg-center">
     <h1 class="text-4xl text-white m-4 p-2">顯示資料</h1>
     <a href="http://${ipport}"><button class="bg-blue-200/70 p-2 rounded-xl hover:bg-blue-300/40 transition-all duration-300">即使影像</button></a>
     <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">

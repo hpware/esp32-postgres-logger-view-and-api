@@ -3,7 +3,7 @@ networks:
 
 services:
   postgresloggerapi:
-    image: postgres-logger-view-api
+    image: ghcr.io/hpware/esp32-postgres-logger-view-and-api:main
     restart: always
     networks:
       plapi:
