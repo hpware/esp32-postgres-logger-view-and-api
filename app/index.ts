@@ -101,30 +101,77 @@ const routes: Record<string, RouteHandler> = {
     }
   },
   "/logger/hub8735datats/:deteec": async (req: Request) => {
-      const detected = req.params.deteec;
-      const body = req.body;
-      if (req.method === "POST") {
-        // Return response immediately
-        const response = Response.json({ status: "Processing" });
-        
-        // Process data in background
-        fcjaauwi(detected, body)
-          .then(data => {
-            console.log("Data processing completed:", data);
-          })
-          .catch(e => {
-            console.error("Error processing data:", e);
-          });
-  
-        return response;
-      } else {
-        return Response.json({ error: "You are not using a POST request." }, { status: 403 });
-      }
-    },
+    const detected = req.params.deteec;
+    const body = req.body;
+    if (req.method === "POST") {
+      // Return response immediately
+      const response = Response.json({ status: "Processing" });
+
+      // Process data in background
+      fcjaauwi(detected, body)
+        .then((data) => {
+          console.log("Data processing completed:", data);
+        })
+        .catch((e) => {
+          console.error("Error processing data:", e);
+        });
+
+      return response;
+    } else {
+      return Response.json(
+        { error: "You are not using a POST request." },
+        { status: 403 },
+      );
+    }
+  },
   "/logger/ledstatus": async (req: Request) => {
     return new Response(await exportChangeType2(), {
       headers: {
         "Content-Type": "text/html",
+      },
+    });
+  },
+  "/logger/createdatabase": async () => {
+    const create1 = await sql`
+CREATE TABLE IF NOT EXISTS logger (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    cwa_type VARCHAR(50),
+    cwa_location VARCHAR(100),
+    cwa_temp DECIMAL(5,2),
+    cwa_hum DECIMAL(5,2),
+    cwa_daily_high DECIMAL(5,2),
+    cwa_daily_low DECIMAL(5,2),
+    local_temp DECIMAL(5,2),
+    local_hum DECIMAL(5,2),
+    local_gps_lat VARCHAR(20),
+    local_gps_long VARCHAR(20),
+    local_time TIMESTAMPTZ,
+    local_jistatus BOOLEAN,
+    local_light BOOLEAN,
+    local_detect JSONB
+);
+`;
+
+    const create2 = await sql`
+CREATE TABLE IF NOT EXISTS detect (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    item text not null,
+    imageURL text not null,
+    detected_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+)
+`;
+
+    const create3 = await sql`
+create table if not exists jistatus (
+    id SERIAL PRIMARY KEY,
+    status boolean not null
+)
+`;
+    return new Response("Database created successfully", {
+      headers: {
+        "Content-Type": "text/plain",
       },
     });
   },
@@ -194,7 +241,7 @@ function broadcast(message: any) {
 
 Bun.serve({
   port: 3000,
-  development:true,
+  development: true,
   fetch(req, server) {
     const success = server.upgrade(req);
     if (success) {
@@ -215,7 +262,10 @@ Bun.serve({
         );
       }
     }
-    return new Response(errorpage, { status: 404, headers: { "Content-Type": "text/html" } });
+    return new Response(errorpage, {
+      status: 404,
+      headers: { "Content-Type": "text/html" },
+    });
   },
   websocket: {
     open(ws) {
@@ -260,20 +310,23 @@ Bun.serve({
       if (req.method === "POST") {
         // Return response immediately
         const response = Response.json({ status: "Processing" });
-        
+
         // Process data in background
         const arrayBuffer = await req.arrayBuffer();
         fcjaauwi(detected, arrayBuffer)
-          .then(data => {
+          .then((data) => {
             console.log("Data processing completed:", data);
           })
-          .catch(e => {
+          .catch((e) => {
             console.error("Error processing data:", e);
           });
-  
+
         return response;
       } else {
-        return Response.json({ error: "You are not using a POST request." }, { status: 403 });
+        return Response.json(
+          { error: "You are not using a POST request." },
+          { status: 403 },
+        );
       }
     },
   },

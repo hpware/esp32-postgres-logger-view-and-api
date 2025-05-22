@@ -1,10 +1,29 @@
-version: "3.9"
+networks:
+  plapi:
 
 services:
   postgresloggerapi:
     image: postgres-logger-view-api
     restart: always
+    networks:
+      plapi:
     ports:
       - 8833:3000
     volumes:
       - ./public:/app/public
+    environment:
+      - POSTGRES_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-postgres}
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    networks:
+      plapi:
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data

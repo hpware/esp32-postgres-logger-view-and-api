@@ -55,8 +55,8 @@ export async function exportNewView2(ipport: string) {
       <hr/>
       <p class="m-3">測站: <span class="text-yellow-800" id="test_station">${data?.cwa_location || "N/A"}</span></p>
       <p class="m-3">天氣狀態: <span class="text-yellow-800" id="type">${data?.cwa_type || "N/A"}</span></p>
-      <p class="m-3"></p>氣溫: <span class="text-yellow-800" id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
-      <p class="m-3"></p>濕度: <span class="text-yellow-800" id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
+      <p class="m-3">氣溫: <span class="text-yellow-800" id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
+      <p class="m-3">濕度: <span class="text-yellow-800" id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
       <p class="m-3">
         最高氣溫 <span class="text-yellow-800" id="daily_high">${data?.cwa_daily_high ?? "N/A"}°C</span>
       </p>
@@ -72,7 +72,7 @@ export async function exportNewView2(ipport: string) {
       <p class="m-3">
         蠕動馬達 <button onclick='fetchRemote()' class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100" id='jistatus2'>${data?.local_jistatus ? "關" : "開"}</button></p>
       <p class="m-3">
-        紅外線 <button onclick="fetchGFA()" class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100" id="light2">${gfa() ? '關' : '開'}</button>
+        紅外線 <button onclick="fetchGFA()" class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100" id="light2">${gfa() ? "關" : "開"}</button>
       </p>
     </section>
     <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">

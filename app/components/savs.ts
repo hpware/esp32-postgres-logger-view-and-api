@@ -14,7 +14,6 @@ export async function fcjaauwi(detect: string, body: any) {
         INSERT INTO detect (created_at, detected_at, item, imageurl)
         values (${d7}, ${d7}, ${detect}, ${imgurl} );
         `;
-
   } catch (e) {
     console.log(e);
   }
