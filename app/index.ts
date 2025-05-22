@@ -194,6 +194,7 @@ function broadcast(message: any) {
 
 Bun.serve({
   port: 3000,
+  development:true,
   fetch(req, server) {
     const success = server.upgrade(req);
     if (success) {

@@ -16,30 +16,31 @@
   <body class="justify-center align-center text-center selection:opactiy-[50%] bg-[url(https://s3.yhw.tw/scharchive/bgimage.jpg)] bg-cover bg-no-repeat bg-center">
     <h1 class="text-4xl text-white m-4 p-2">顯示資料</h1>
     <a href="http://${ipport}"><button class="bg-blue-200/70 p-2 rounded-xl hover:bg-blue-300/40 transition-all duration-300">即使影像</button></a>
-    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
-      <h3>氣象局</h3>
-      <p>測站: <span id="test_station">${data?.cwa_location || "N/A"}</span></p>
-      <p>天氣狀態: <span id="type">${data?.cwa_type || "N/A"}</span></p>
-      <p>氣溫: <span id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
-      <p>濕度: <span id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
-      <p>
-        最高氣溫 <span id="daily_high">${data?.cwa_daily_high ?? "N/A"}°C</span>
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">
+      <h3 class="text-3xl">氣象局</h3>
+      <hr/>
+      <p class="m-3">測站: <span class="text-sky-700" id="test_station">${data?.cwa_location || "N/A"}</span></p>
+      <p class="m-3">天氣狀態: <span class="text-sky-700" id="type">${data?.cwa_type || "N/A"}</span></p>
+      <p class="m-3"></p>氣溫: <span class="text-sky-700" id="temp">${data?.cwa_temp ?? "N/A"}°C</span></p>
+      <p class="m-3"></p>濕度: <span class="text-sky-700" id="hum">${data?.cwa_hum ?? "N/A"}%</span></p>
+      <p class="m-3">
+        最高氣溫 <span class="text-sky-700" id="daily_high">${data?.cwa_daily_high ?? "N/A"}°C</span>
       </p>
       <p>
-        最低氣溫 <span id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span>
+        最低氣溫 <span class="text-sky-700" id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span>
       </p>
     </section>
     <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>本地</h3>
-      <p>氣溫: <span id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
-      <p>濕度: <span id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
+      <p>氣溫: <span class="text-sky-700" id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
+      <p>濕度: <span class="text-sky-700" id="local_hum">${data?.local_hum ?? "N/A"}%</span></p>
       <p>
         蠕動馬達:
-        <span id="motor_status"
+        <span class="text-sky-700" id="motor_status"
           >${data?.local_jistatus ? "運轉中" : "停止"}</span
         >
       </p>
-      <p>紅外線: <span id="light">${gfa() ? "關" : "開"}</span></p>
+      <p>紅外線: <span class="text-sky-700" id="light">${gfa() ? "關" : "開"}</span></p>
       <p>
         蠕動馬達 ${data?.local_jistatus ? "<button onclick='fetchRemote() id='jistatus2'>關</button>" : '<button onclick="fetchRemote()" id="jistatus2">開</button>'}</p>
       <p>
@@ -48,8 +49,8 @@
     </section>
     <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>GPS 定位</h3>
-      <p>經度: <span id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
-      <p>緯度: <span id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
+      <p>經度: <span class="text-sky-700" id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
+      <p>緯度: <span class="text-sky-700" id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
     </section>
     <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 w-fit mx-auto rounded-lg shadow-lg backdrop-blur-sm">
       <h3>偵測到的物種</h3>
