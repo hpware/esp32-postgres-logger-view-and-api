@@ -136,7 +136,7 @@ export async function exportNewView2(ipport: string) {
     console.log(gpsLat);
     console.log(gpsLong);
     console.log(detectedList);  
-    const socket = new WebSocket("wss://zb-logger.sch2.top/logger/");
+    const socket = new WebSocket("wss://hpg7.sch2.top/logger/");
     socket.addEventListener("message", (event1) => {
       const event = JSON.parse(event1.data)[0]; // AI added this
       console.log(event);
