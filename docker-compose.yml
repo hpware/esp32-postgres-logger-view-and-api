@@ -8,7 +8,7 @@ services:
     networks:
       plapi:
     ports:
-      -   :3000
+      - 8833:3000
     volumes:
       - ./public:/app/public
     environment:
