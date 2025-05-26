@@ -47,10 +47,10 @@ export async function exportNewView2(ipport: string) {
     console.log("ID: ${data?.id}");
     console.log("Date: ${formatTime(String(data?.created_at))}");
   </script>
-  <body class="justify-center align-center text-center selection:opactiy-[50%] bg-[url(https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/public/bg.jpg)] bg-cover bg-no-repeat bg-center">
+  <body class="justify-center align-center text-center selection:opactiy-[50%] p-1 bg-[url(https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/public/bg.jpg)] bg-cover bg-no-repeat bg-center">
     <h1 class="text-4xl bg-white m-4 p-2 text-transparent text-center align-middle justify-center bg-clip-text backdrop-blur-lg shadow-lg shadown-gray-200 border border-white rounded-3xl flex flex-col">顯示資料</h1>
     <a href="http://${ipport}"><button class="bg-blue-200/70 p-2 rounded-xl hover:bg-blue-300/40 transition-all duration-300">即使影像</button></a>
-    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 lg:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3">
       <h3 class="text-3xl text-bold">氣象局</h3>
       <hr/>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">測站: <span class="text-yellow-800" id="test_station">${data?.cwa_location || "N/A"}</span></p>
@@ -64,7 +64,7 @@ export async function exportNewView2(ipport: string) {
         最低氣溫 <span class="text-yellow-800" id="daily_low">${data?.cwa_daily_low ?? "N/A"}°C</span>
       </p>
     </section>
-    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 lg:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3">
       <h3 class="text-3xl text-bold">本地</h3>
       <hr/>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">氣溫: <span class="text-yellow-800" id="local_temp">${data?.local_temp ?? "N/A"}°C</span></p>
@@ -75,13 +75,13 @@ export async function exportNewView2(ipport: string) {
         紅外線 <button onclick="fetchGFA()" class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100" id="light2">${gfa() ? "關" : "開"}</button>
       </p>
     </section>
-    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 lg:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3">
       <h3 class="text-3xl text-bold">GPS 定位</h3>
       <hr/>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">經度: <span class="text-yellow-800" id="gps_lat">${data?.local_gps_lat || "N/A"}</span></p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">緯度: <span class="text-yellow-800" id="gps_long">${data?.local_gps_long || "N/A"}</span></p>
     </section>
-    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 lg:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2">
+    <section class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3">
       <ul id="detected_list">
         <!--${getList}-->
         ${
