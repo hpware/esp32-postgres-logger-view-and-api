@@ -18,7 +18,14 @@ services:
     depends_on:
       - pgdb
       - s3
-
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    networks:
+      plapi:
+    command: tunnel --no-autoupdate run --token 
+    depends_on:
+      - app
   pgdb:
     image: postgres:latest
     restart: always
