@@ -23,7 +23,7 @@ services:
     restart: always
     networks:
       plapi:
-    command: tunnel --no-autoupdate run --token 
+    command: tunnel --no-autoupdate run --token
     depends_on:
       - app
   pgdb:

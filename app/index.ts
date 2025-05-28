@@ -16,25 +16,25 @@ const errorpage = readFileSync(
   "utf8",
 );
 
+const indexpage = readFileSync(
+  join(process.cwd(), "app", "home.html"),
+  "utf8",
+);
+
 let clients = new Set<ServerWebSocket<unknown>>();
 
 type RouteHandler = (req: Request) => Promise<Response> | Response;
 
 const routes: Record<string, RouteHandler> = {
-  "/logger/": () =>
-    new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/logger/view",
-      },
-    }),
-  "/logger/view": () =>
-    new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/logger/view/192.168.1.3",
-      },
-    }),
+  "/logger/": () => new Response(indexpage, {
+    headers: { "Content-Type": "text/html" },
+  }),
+  "/logger": () => new Response(indexpage, {
+    headers: { "Content-Type": "text/html" },
+  }),
+  "/": () => new Response(indexpage, {
+    headers: { "Content-Type": "text/html" },
+  }),
   "/logger/jistatus": async () => {
     return new Response(await exportChangeType(), {
       headers: {

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AIOT 生態物種即使監測回報裝置網頁系統</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+  <body class="justify-center align-center text-center selection:opactiy-[50%] text-white">
+    <!--Failback-->
+    <div class="bg-gradient-to-r from-blue-500 to-green-500 min-h-screen flex items-center justify-center z-[1] hidden" id="failback"></div>
+    <div class="h-[100dvh] w-full absolute inset-0 bg-[url(https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/bg.jpg?raw=true)] bg-cover bg-no-repeat bg-center"></div>
+    <div></div>
+    <div
+      class="justify-center align-center text-center selection:opactiy-[50%] absolute inset-0 flex flex-col p-10 md:p-20 lg:p-40 xl:p-60 2xl:p-80"
+    >
+      <div class="flex flex-col justify-center items-center bg-gray-300/50 backdrop-blur-sm z-10 p-3 rounded-lg shadow-lg py-10">
+        <h1 class="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-4">
+          AIOT 生態物種即時監測回報裝置網頁系統
+        </h1>
+        <p class="text-lg text-white mb-8">
+          歡迎使用管理系統
+        </p>
+        <div class="flex flex-col items-center">
+            <select class="bg-white text-black border border-gray-300 rounded-md p-2 mb-4" id="device-select">
+                <option value="0">選擇連線機器</option>
+                <option value="1">機器 1</option>
+                <option value="2">機器 2</option>
+                <option value="3">機器 3</option>
+            </select>
+            <div class="flex flex-row">
+              <input type="password" placeholder="輸入存取密碼" class="bg-white text-black border border-gray-300 rounded-md p-2" id="access-key" />
+            </div>
+            <p class="text-sm text-gray-300 mb-4">請選擇連線機器並輸入存取密碼</p>
+            <button class="bg-white text-black rounded-md p-2 mb-4 hover:bg-gray-200 transition-all duartion-300" onclick="openDevice()">送出</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      function openDevice() {
+        const deviceSelect = document.getElementById('device-select');
+        const selectedValue = deviceSelect.value;
+        const accessKey = document.getElementById('access-key');
+        if (accessKey.value === '') {
+          alert('請輸入存取密碼');
+          return;
+        } else {
+          if (selectedValue !== '0') {
+          window.location.href = `/logger/device/${selectedValue}?access_key=${accessKey.value}`;
+        } else {
+          alert('請選擇一個連線機器');
+        }
+        }
+      }
+      document.addEventListener('DOMContentLoaded', async function() {
+        const failback = document.getElementById('failback');
+        const imagedoc = await fetch('https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/bg.jpg?raw=true');
+        if (imagedoc.ok) {
+          failback.classList.add('hidden');
+        } else {
+          failback.classList.remove('hidden');
+        }
+      });
+    </script>
+  </body>
+</html>
