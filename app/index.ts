@@ -300,22 +300,32 @@ Bun.serve({
     });
   },
   websocket: {
-    open(ws) {
+    open(ws: ServerWebSocket<{ device: string; authToken: string }>, req: Request) {
+      const url = new URL(req.url);
+      const device: string | null = url.searchParams.get('device');
+      const authToken: string | null = url.searchParams.get('authToken');
+      
+      // Validate connection
+      if (!device || !authToken) {
+        ws.close(1008, 'Missing device or auth token');
+        return;
+      }
+      ws.data = { device, authToken };
       clients.add(ws);
-      console.log("Client connected, total clients:", clients.size);
-      // Send current data to newly connected client
+      console.log(`Client ${device} connected, total clients:`, clients.size);
+      
+      // Send initial data
       jsonData()
-        .then((data) => {
+        .then((data: any) => {
           try {
             ws.send(JSON.stringify(data));
-            console.log("Sent initial data to client");
+            console.log(`Sent initial data to client ${device}`);
           } catch (error) {
-            console.error("Failed to send initial data:", error);
+            console.error(`Failed to send initial data to ${device}:`, error);
           }
         })
-        .catch((err) => {
-          console.error("Error getting JSON data:", err);
-        });
+        .catch((err: Error) => console.error("Error getting JSON data:", err));
+    },
     },
     close(ws) {
       clients.delete(ws);

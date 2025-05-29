@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AIOT 生態物種即使監測回報裝置 ${data.device}</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="og:author:email" content="hw@yuanhau.com" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  </head>
+  <script>
+    console.log("ID: ${data?.id}");
+    console.log("Date: ${formatTime(String(data?.created_at))}");
+  </script>
+  <body
+    class="justify-center align-center text-center selection:opactiy-[50%] p-1 bg-[url(https://raw.githubusercontent.com/hpware/esp32-postgres-logger-view-and-api/refs/heads/main/bg.jpg?raw=true)] bg-cover bg-no-repeat bg-center"
+  >
+    <h1
+      class="text-4xl bg-white m-4 p-2 text-transparent text-center align-middle justify-center bg-clip-text backdrop-blur-lg shadow-lg shadown-gray-200 border border-white rounded-3xl flex flex-col"
+    >
+      顯示資料
+    </h1>
+    <a href="http://${ipport}"
+      ><button
+        class="bg-blue-200/70 p-2 rounded-xl hover:bg-blue-300/40 transition-all duration-300"
+      >
+        即使影像
+      </button></a
+    >
+    <section
+      class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3"
+    >
+      <h3 class="text-3xl text-bold">氣象局</h3>
+      <hr />
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        測站:
+        <span class="text-yellow-800" id="test_station"
+          >N/A</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        天氣狀態:
+        <span class="text-yellow-800" id="type"
+          ></span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        氣溫:
+        <span class="text-yellow-800" id="temp"
+          >N/A°C</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        濕度:
+        <span class="text-yellow-800" id="hum">N/A%</span>
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        最高氣溫
+        <span class="text-yellow-800" id="daily_high"
+          >N/A°C</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        最低氣溫
+        <span class="text-yellow-800" id="daily_low"
+          >N/A°C</span
+        >
+      </p>
+    </section>
+    <section
+      class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3"
+    >
+      <h3 class="text-3xl text-bold">本地</h3>
+      <hr />
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        氣溫:
+        <span class="text-yellow-800" id="local_temp"
+          >N/A°C</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        濕度:
+        <span class="text-yellow-800" id="local_hum"
+          >N/A%</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        蠕動馬達
+        <button
+          onclick="fetchRemote()"
+          class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100"
+          id="jistatus2"
+        >
+          ${data?.local_jistatus ? "關" : "開"}
+        </button>
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        紅外線
+        <button
+          onclick="fetchGFA()"
+          class="p-2 bg-lime-400 hover:bg-lime-600 rounded-xl m-1 transition-all duration-100"
+          id="light2"
+        >
+          ${gfa() ? "關" : "開"}
+        </button>
+      </p>
+    </section>
+    <section
+      class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3"
+    >
+      <h3 class="text-3xl text-bold">GPS 定位</h3>
+      <hr />
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        經度:
+        <span class="text-yellow-800" id="gps_lat"
+          >N/A</span
+        >
+      </p>
+      <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
+        緯度:
+        <span class="text-yellow-800" id="gps_long"
+          >N/A</span
+        >
+      </p>
+    </section>
+    <section
+      class="bg-gray-200/70 p-4 m-4 min-w-1/3 md:w-fit w-full mx-auto rounded-lg shadow-lg backdrop-blur-sm gap-2 m-3"
+    >
+      <ul id="detected_list">
+        <!--${getList}-->
+        ${ fcja().length > 0 ? fcja() .map( (item) => `
+        <li>
+          <a href="${item.imageURL}"
+            ><div>
+              <span>${item.item}</span>
+              <br />
+              偵測時間: ${formatTime(String(item?.time))}
+              <br />
+              <!--${item}-->
+            </div></a
+          >
+        </li>
+        `, ) .join("") : `
+        <li>尚未偵測到物種</li>
+        ` }
+      </ul>
+    </section>
+    <div class="fixed bottom-0 p-1 px-2 m-2 right-0 bg-white rounded-xl flex items-center gap-2">
+      <i id="connectstatus" class="bi bi-dot text-red-500 text-4xl"></i>
+      <span id="connectstatusText" class="text-center">沒有連線</span>
+    </div>
+  </body>
+  <script>
+    let cwaType = document.getElementById("type").innerText;
+    let cwaTemp = document.getElementById("temp").innerText;
+    let cwaHum = document.getElementById("hum").innerText;
+    let cwaDailyHigh = document.getElementById("daily_high").innerText;
+    let cwaDailyLow = document.getElementById("daily_low").innerText;
+    let localTemp = document.getElementById("local_temp").innerText;
+    let localHum = document.getElementById("local_hum").innerText;
+    let gpsLat = document.getElementById("gps_lat").innerText;
+    let gpsLong = document.getElementById("gps_long").innerText;
+    let detectedList = document.getElementById("detected_list").innerText;
+    let lightStatus2 = document.getElementById("light2").innerText;
+    let jistatus2 = document.getElementById("jistatus2").innerText;
+    let connectStatusPopUp = document.getElementById("connectstatus").classList;
+    console.log(cwaType);
+    console.log(cwaTemp);
+    console.log(cwaHum);
+    console.log(cwaDailyHigh);
+    console.log(cwaDailyLow);
+    console.log(localTemp);
+    console.log(localHum);
+    console.log(gpsLat);
+    console.log(gpsLong);
+    console.log(detectedList);
+    function connectWebSocket(device, authToken) {
+      const encodedDevice = encodeURIComponent(device);
+      const encodedToken = encodeURIComponent(authToken);
+
+      const socket = new WebSocket(
+        `wss://pgiot.sch2.top/logger/?device=${encodedDevice}&authToken=${encodedToken}`,
+      );
+
+      socket.onopen = () => {
+        console.log("WebSocket connected");
+        connectStatusPopUp.add("text-green-500");
+        connectStatusPopUp.remove("text-red-500");
+        document.getElementById("connectstatusText").innerText = "已連線";
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data)[0];
+          updateUI(data);
+        } catch (error) {
+          console.error("Error processing message:", error);
+        }
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket error:", error);
+        connectStatusPopUp.add("text-red-500");
+        connectStatusPopUp.remove("text-green-500");
+        document.getElementById("connectstatusText").innerText = "沒有連線";
+      };
+
+      socket.onclose = (event) => {
+        console.log("WebSocket closed:", event.code, event.reason);
+        // Attempt to reconnect after 5 seconds
+        setTimeout(() => connectWebSocket(device, authToken), 5000);
+      };
+
+      return socket;
+    }
+    const device = "${device}"; 
+    const authToken = "${deviceAuthToken}"; 
+    const socket = connectWebSocket(device, authToken);
+    function updateUI(data) {
+      
+      document.getElementById("type").textContent = data.cwa_type || "N/A";
+      document.getElementById("temp").textContent =
+        `N/A°C`;
+      document.getElementById("hum").textContent = `N/A%`;
+      document.getElementById("daily_high").textContent =
+        `N/A°C`;
+      document.getElementById("daily_low").textContent =
+        `N/A°C`;
+      document.getElementById("local_temp").textContent =
+        `N/A°C`;
+      document.getElementById("local_hum").textContent =
+        `N/A%`;
+      document.getElementById("gps_lat").textContent =
+        data.local_gps_lat || "N/A";
+      document.getElementById("gps_long").textContent =
+        data.local_gps_long || "N/A";
+      document.getElementById("jistatus2").textContent = data.local_jistatus
+        ? "關"
+        : "開";
+      document.getElementById("light2").textContent = data.local_light
+        ? "關"
+        : "開";
+
+      // Update detected list if needed
+      if (data.local_detect) {
+        const detectedList = document.getElementById("detected_list");
+        // Implementation depends on your data structure
+      }
+    }
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString("zh-TW", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      });
+    }
+    async function fetchRemote() {
+      const req = await fetch(
+        "/logger/jistatus?device=${device}&authToken=${authToken}",
+      );
+      const res = await req.text();
+      alert("已發送到伺服器");
+      return res;
+    }
+    async function fetchGFA() {
+      const req = await fetch(
+        "/logger/ledstatus?device=${device}&authToken=${authToken}",
+      );
+      const res = await req.text();
+      alert("已發送到伺服器");
+      return res;
+    }
+  </script>
+</html>
