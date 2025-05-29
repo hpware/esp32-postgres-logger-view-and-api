@@ -255,15 +255,29 @@ create table if not exists jistatus (
   },
 };
 
-function broadcast(message: any) {
-  console.log(`Broadcasting to ${clients.size} clients`);
-  for (const client of clients) {
-    try {
-      client.send(JSON.stringify(message));
-    } catch (error) {
-      console.error("Failed to send to a client:", error);
+// Helper to match dynamic routes and extract params
+function matchRoute(path: string, routes: Record<string, RouteHandler>) {
+  for (const route in routes) {
+    // Convert "/logger/view/:ipport" to regex
+    const paramNames: string[] = [];
+    const regex = new RegExp(
+      "^" +
+        route.replace(/:[^\/]+/g, (m) => {
+          paramNames.push(m.slice(1));
+          return "([^/]+)";
+        }) +
+        "$"
+    );
+    const match = path.match(regex);
+    if (match) {
+      const params: Record<string, string> = {};
+      paramNames.forEach((name, i) => {
+        params[name] = match[i + 1];
+      });
+      return { handler: routes[route], params };
     }
   }
+  return null;
 }
 
 Bun.serve({
@@ -279,10 +293,26 @@ Bun.serve({
     let processedPath = url.pathname.replace(/\/$/, "");
     if (processedPath === "" && url.pathname === "/") {
       processedPath = "/";
-   }
-  
+    }
+
+    // Try to match dynamic routes
+    const match = matchRoute(processedPath, routes);
+    if (match) {
+      try {
+        // Attach params to req
+        (req as any).params = match.params;
+        return match.handler(req);
+      } catch (error) {
+        console.error("Route handler error:", error);
+        return Response.json(
+          { error: "Internal server error" },
+          { status: 500 },
+        );
+      }
+    }
+
+    // Fallback to static route
     const handler = routes[processedPath];
-  
     if (typeof handler === "function") {
       try {
         return handler(req);
@@ -326,7 +356,6 @@ Bun.serve({
         })
         .catch((err: Error) => console.error("Error getting JSON data:", err));
     },
-    },
     close(ws) {
       clients.delete(ws);
       console.log("Client disconnected, total clients:", clients.size);
@@ -339,37 +368,5 @@ Bun.serve({
         console.error("Error parsing WebSocket message:", error);
       }
     },
-  },
-  routes: {
-    "/logger/view/:ipport": async (req: Request) => {
-      const ipport = (req as any).params.ipport;
-      return new Response(await exportNewView2(ipport), {
-        headers: { "Content-Type": "text/html" },
-      });
-    },
-    "/logger/hub8735datats/:deteec": async (req: Request) => {
-      const detected = req.params.deteec;
-      if (req.method === "POST") {
-        // Return response immediately
-        const response = Response.json({ status: "Processing" });
-
-        // Process data in background
-        const arrayBuffer = await req.arrayBuffer();
-        fcjaauwi(detected, arrayBuffer)
-          .then((data) => {
-            console.log("Data processing completed:", data);
-          })
-          .catch((e) => {
-            console.error("Error processing data:", e);
-          });
-
-        return response;
-      } else {
-        return Response.json(
-          { error: "You are not using a POST request." },
-          { status: 403 },
-        );
-      }
-    },
-  },
+  }
 });
