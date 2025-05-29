@@ -275,9 +275,14 @@ Bun.serve({
       return;
     }
     const url = new URL(req.url);
-    const path = url.pathname.replace(/\/$/, "");
-    const handler = routes[path];
 
+    let processedPath = url.pathname.replace(/\/$/, "");
+    if (processedPath === "" && url.pathname === "/") {
+      processedPath = "/";
+   }
+  
+    const handler = routes[processedPath];
+  
     if (typeof handler === "function") {
       try {
         return handler(req);
