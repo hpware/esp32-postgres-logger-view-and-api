@@ -7,7 +7,10 @@
     <meta name="og:author:email" content="hw@yuanhau.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
   </head>
   <script>
     console.log("ID: ${data?.id}");
@@ -35,21 +38,15 @@
       <hr />
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         測站:
-        <span class="text-yellow-800" id="test_station"
-          >N/A</span
-        >
+        <span class="text-yellow-800" id="test_station">N/A</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         天氣狀態:
-        <span class="text-yellow-800" id="type"
-          ></span
-        >
+        <span class="text-yellow-800" id="type"></span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         氣溫:
-        <span class="text-yellow-800" id="temp"
-          >N/A°C</span
-        >
+        <span class="text-yellow-800" id="temp">N/A°C</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         濕度:
@@ -57,15 +54,11 @@
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         最高氣溫
-        <span class="text-yellow-800" id="daily_high"
-          >N/A°C</span
-        >
+        <span class="text-yellow-800" id="daily_high">N/A°C</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         最低氣溫
-        <span class="text-yellow-800" id="daily_low"
-          >N/A°C</span
-        >
+        <span class="text-yellow-800" id="daily_low">N/A°C</span>
       </p>
     </section>
     <section
@@ -75,15 +68,11 @@
       <hr />
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         氣溫:
-        <span class="text-yellow-800" id="local_temp"
-          >N/A°C</span
-        >
+        <span class="text-yellow-800" id="local_temp">N/A°C</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         濕度:
-        <span class="text-yellow-800" id="local_hum"
-          >N/A%</span
-        >
+        <span class="text-yellow-800" id="local_hum">N/A%</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         蠕動馬達
@@ -113,15 +102,11 @@
       <hr />
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         經度:
-        <span class="text-yellow-800" id="gps_lat"
-          >N/A</span
-        >
+        <span class="text-yellow-800" id="gps_lat">N/A</span>
       </p>
       <p class="p-2 bg-white/60 rounded-2xl m-3 backdrop-blur-sm">
         緯度:
-        <span class="text-yellow-800" id="gps_long"
-          >N/A</span
-        >
+        <span class="text-yellow-800" id="gps_long">N/A</span>
       </p>
     </section>
     <section
@@ -146,7 +131,9 @@
         ` }
       </ul>
     </section>
-    <div class="fixed bottom-0 p-1 px-2 m-2 right-0 bg-white rounded-xl flex items-center gap-2">
+    <div
+      class="fixed bottom-0 p-1 px-2 m-2 right-0 bg-white rounded-xl flex items-center gap-2"
+    >
       <i id="connectstatus" class="bi bi-dot text-red-500 text-4xl"></i>
       <span id="connectstatusText" class="text-center">沒有連線</span>
     </div>
@@ -214,23 +201,17 @@
 
       return socket;
     }
-    const device = "${device}"; 
-    const authToken = "${deviceAuthToken}"; 
+    const device = "${device}";
+    const authToken = "${deviceAuthToken}";
     const socket = connectWebSocket(device, authToken);
     function updateUI(data) {
-      
       document.getElementById("type").textContent = data.cwa_type || "N/A";
-      document.getElementById("temp").textContent =
-        `N/A°C`;
+      document.getElementById("temp").textContent = `N/A°C`;
       document.getElementById("hum").textContent = `N/A%`;
-      document.getElementById("daily_high").textContent =
-        `N/A°C`;
-      document.getElementById("daily_low").textContent =
-        `N/A°C`;
-      document.getElementById("local_temp").textContent =
-        `N/A°C`;
-      document.getElementById("local_hum").textContent =
-        `N/A%`;
+      document.getElementById("daily_high").textContent = `N/A°C`;
+      document.getElementById("daily_low").textContent = `N/A°C`;
+      document.getElementById("local_temp").textContent = `N/A°C`;
+      document.getElementById("local_hum").textContent = `N/A%`;
       document.getElementById("gps_lat").textContent =
         data.local_gps_lat || "N/A";
       document.getElementById("gps_long").textContent =

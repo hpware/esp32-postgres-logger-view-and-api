@@ -330,16 +330,17 @@ Bun.serve({
     });
   },
   websocket: {
-    open(ws: ServerWebSocket<{ device: string; authToken: string }>, req: Request) {
-      const url = new URL(req.url);
-      const device: string | null = url.searchParams.get('device');
-      const authToken: string | null = url.searchParams.get('authToken');
+    open(ws: ServerWebSocket<{ device: string; authToken: string }>) {
+      // Get connection parameters directly from the ws object
+      const device = ws.headers.get('device');
+      const authToken = ws.headers.get('authToken');
       
       // Validate connection
       if (!device || !authToken) {
         ws.close(1008, 'Missing device or auth token');
         return;
       }
+      
       ws.data = { device, authToken };
       clients.add(ws);
       console.log(`Client ${device} connected, total clients:`, clients.size);
