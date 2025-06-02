@@ -84,6 +84,17 @@
           failback.classList.remove("hidden");
         }
       });
+      async function fetchDevices() {
+        const fetchDevices = await fetch("/logger/devices");
+        const devices = await fetchDevices.json();
+        const deviceSelect = document.getElementById("device-select");
+        devices.forEach((device) => {
+          const option = document.createElement("option");
+          option.value = device.id;
+          option.textContent = `機器 ${device.id}`;
+          deviceSelect.appendChild(option);
+        });
+      }
     </script>
   </body>
 </html>

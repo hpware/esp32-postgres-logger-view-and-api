@@ -35,9 +35,6 @@
             id="device-select"
           >
             <option value="0">選擇連線機器</option>
-            <option value="1">機器 1</option>
-            <option value="2">機器 2</option>
-            <option value="3">機器 3</option>
           </select>
           <div class="flex flex-row">
             <input
@@ -67,8 +64,7 @@
           return;
         } else {
           if (selectedValue !== "0") {
-            localStorage.setItem("accessToken", accessKey.value);
-            window.location.href = `/logger/device/${selectedValue}`;
+            window.location.href = `/logger/device/${selectedValue}?access_key=${accessKey.value}`;
           } else {
             alert("請選擇一個連線機器");
           }
@@ -84,7 +80,19 @@
         } else {
           failback.classList.remove("hidden");
         }
+        fetchDevices();
       });
+      async function fetchDevices() {
+        const fetchDevices = await fetch("/logger/devices");
+        const devices = await fetchDevices.json();
+        const deviceSelect = document.getElementById("device-select");
+        devices.data.forEach((device) => {
+          const option = document.createElement("option");
+          option.value = device.endpointid;
+          option.textContent = `機器 ${device.id}`;
+          deviceSelect.appendChild(option);
+        });
+      }
     </script>
   </body>
 </html>
